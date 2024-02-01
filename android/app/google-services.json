@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "132336645051",
+    "project_id": "aflbizprocess",
+    "storage_bucket": "aflbizprocess.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:132336645051:android:471ceb53bef98157100a9e",
+        "android_client_info": {
+          "package_name": "com.example.afl_jms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBY0jBEBpba6lyhAbXLvJMHThKOGU-fPis"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:132336645051:android:cbc7e2eccfe25781100a9e",
+        "android_client_info": {
+          "package_name": "com.sgsafljms.sgs_afl_jms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBY0jBEBpba6lyhAbXLvJMHThKOGU-fPis"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

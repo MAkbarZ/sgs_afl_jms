@@ -9,6 +9,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
+  get: ^4.6.6
+  get_storage: ^2.1.1
+  cloud_firestore: ^4.4.5
+  firebase_auth: ^4.3.0
+  firebase_core: ^2.8.0
+  crypto: ^3.0.2
+  convert: ^3.1.0
+  intl: ^0.18.1
+  firebase_database: ^10.0.16
+  cloud_functions: ^4.0.13
 
 dev_dependencies:
   flutter_test:
@@ -17,9 +28,12 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  # assets:
+  assets:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
+   - assets/images/sgs_logo.png
+  #  - assets/images/dashboard/
+  #  - assets/images/icons/
   # fonts:
   #   - family: Schyler
   #     fonts:
@@ -31,3 +45,16 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
+
+  fonts:
+      - family: Arial
+        fonts:
+          - asset: assets/fonts/arial.ttf
+          - asset: assets/fonts/arialitalic.ttf
+            style: italic 
+
+      - family: ArialBold
+        fonts:   
+          - asset: assets/fonts/arial.ttf
+          - asset: assets/fonts/arialbold.ttf
+            weight: 700
