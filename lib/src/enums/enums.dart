@@ -1,0 +1,1 @@
+enum SGSEnumActivation { activate, deactivate }
