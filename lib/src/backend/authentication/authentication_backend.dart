@@ -1,3 +1,4 @@
+import 'package:afljms/src/features/authentication/screens/register_screen.dart';
 import 'package:afljms/src/utils/get_snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -26,7 +27,8 @@ class AuthenticationBackEnd extends GetxController {
   }
 
   setInitialScreen(User? user, {String? section}) {
-    // print(user);
+    Get.to(() => const RegisterScreen());
+    print(user);
     if (user == null) {
       Get.to(() => SplashScreen());
       // Get.to(() => const SignUpScreen());
