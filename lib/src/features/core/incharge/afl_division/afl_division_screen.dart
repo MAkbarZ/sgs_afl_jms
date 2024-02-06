@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../utils/get_snackbar.dart';
+import '../controllers/afl_division_controller.dart';
 import 'afl_division_add_drawer.dart';
 
 // import 'package:convert/convert.dart';
@@ -19,7 +20,9 @@ class AFLDivisionScreen extends StatefulWidget {
 }
 
 class _AFLDivisionScreenState extends State<AFLDivisionScreen> {
-  final _collection = FirebaseFirestore.instance.collection('afl_division');
+  // final _collection = FirebaseFirestore.instance.collection('afl_division');
+  final AFLDivisionController _controller = Get.put(AFLDivisionController());
+
   var searchDivision = "";
 
   @override
@@ -51,12 +54,13 @@ class _AFLDivisionScreenState extends State<AFLDivisionScreen> {
             ),
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
-                  stream: _collection
-                      .orderBy('divisionName', descending: false)
-                      .startAt([searchDivision])
-                      .endAt(["$searchDivision\uf8ff"])
-                      .limit(20)
-                      .snapshots(),
+                  // stream: _controller.dbCollection
+                  //     .orderBy('divisionName', descending: false)
+                  //     .startAt([searchDivision])
+                  //     .endAt(["$searchDivision\uf8ff"])
+                  //     .limit(20)
+                  //     .snapshots(),
+                  stream: _controller.getTwentyRecords(searchDivision),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       SGSSnackbar.getSnackbarRed(
@@ -127,15 +131,18 @@ class _AFLDivisionScreenState extends State<AFLDivisionScreen> {
                                           value: currentRecord['active'],
                                           onChanged: (bool currentValue) {
                                             // setState(() =>
-                                            _collection
-                                                .doc(currentRecord[
-                                                    'divisionName'])
-                                                .update({
-                                              "divisionName":
-                                                  currentRecord['divisionName'],
-                                              "active": currentValue,
-                                            });
+                                            // _controller.dbCollection
+                                            //     .doc(currentRecord[
+                                            //         'divisionName'])
+                                            //     .update({
+                                            //   "divisionName":
+                                            //       currentRecord['divisionName'],
+                                            //   "active": currentValue,
+                                            // });
                                             // );
+                                            _controller.updateRecord(
+                                                currentRecord['divisionName'],
+                                                currentValue);
                                           }),
                                     ),
                                   ),
