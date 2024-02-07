@@ -1,11 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../../common_widgets/input_field.dart';
 import '../../../../enums/enums.dart';
+import '../controllers/afl_function_controller.dart';
 
 class AFLFunctionAdd extends StatefulWidget {
   const AFLFunctionAdd({
@@ -17,12 +16,9 @@ class AFLFunctionAdd extends StatefulWidget {
 }
 
 class _AFLFunctionAddState extends State<AFLFunctionAdd> {
-  final _collection = FirebaseFirestore.instance.collection('afl_function');
+  final AFLFunctionController _controller = Get.put(AFLFunctionController());
 
-  bool _functionActive = true;
   bool _IsEmptyFunctionName = true;
-
-  TextEditingController functionNameController = TextEditingController();
 
   Set<SGSEnumActivation> _enumActivation = <SGSEnumActivation>{
     SGSEnumActivation.activate,
@@ -58,7 +54,7 @@ class _AFLFunctionAddState extends State<AFLFunctionAdd> {
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               SGSInputField(
-                  textEditingController: functionNameController,
+                  textEditingController: _controller.functionController,
                   title: 'Function Name',
                   hint: 'Function Name',
                   maxLength: 15,
@@ -107,9 +103,9 @@ class _AFLFunctionAddState extends State<AFLFunctionAdd> {
                       setState(() {
                         if (selected.elementAt(0) ==
                             SGSEnumActivation.activate) {
-                          _functionActive = true;
+                          _controller.functionActive = true;
                         } else {
-                          _functionActive = false;
+                          _controller.functionActive = false;
                         }
                         _enumActivation = selected;
                       });
@@ -131,26 +127,15 @@ class _AFLFunctionAddState extends State<AFLFunctionAdd> {
                 child: ElevatedButton(
                   onPressed: () {
                     SystemChannels.textInput.invokeMethod('TextInput.hide');
-                    // print(functionNameController.text.trim());
-                    // print(_functionActive);
-                    var _functionName = "";
-                    if (functionNameController.text.trim() != "") {
-                      _functionName = functionNameController.text.trim();
 
-                      // setState(() => _IsEmptyFunctionName = false);
+                    if (_controller.functionController.text.trim() != "") {
+                      _controller.create();
 
-                      _collection.doc(functionNameController.text.trim()).set({
-                        "functionName": functionNameController.text.trim(),
-                        "active": _functionActive,
-                      });
                       Get.back();
                     } else {
                       setState(() => _IsEmptyFunctionName = true);
                       return;
                     }
-
-                    // print(_functionName);
-                    // print(_functionActive);
                   },
                   child: const Text('Submit'),
                 ),

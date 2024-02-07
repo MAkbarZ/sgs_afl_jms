@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:afljms/src/features/core/incharge/controllers/afl_division_controller.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,12 +17,9 @@ class AFLDivisionAdd extends StatefulWidget {
 }
 
 class _AFLDivisionAddState extends State<AFLDivisionAdd> {
-  final _collection = FirebaseFirestore.instance.collection('afl_division');
-
-  bool _divisionActive = true;
   bool _IsEmptyDivName = true;
 
-  TextEditingController divisionController = TextEditingController();
+  final AFLDivisionController _controller = Get.put(AFLDivisionController());
 
   Set<SGSEnumActivation> _enumActivation = <SGSEnumActivation>{
     SGSEnumActivation.activate,
@@ -58,7 +55,7 @@ class _AFLDivisionAddState extends State<AFLDivisionAdd> {
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               SGSInputField(
-                  textEditingController: divisionController,
+                  textEditingController: _controller.divisionController,
                   title: 'Division Name',
                   hint: 'Division Name',
                   maxLength: 15,
@@ -132,9 +129,9 @@ class _AFLDivisionAddState extends State<AFLDivisionAdd> {
                       setState(() {
                         if (selected.elementAt(0) ==
                             SGSEnumActivation.activate) {
-                          _divisionActive = true;
+                          _controller.divisionActive = true;
                         } else {
-                          _divisionActive = false;
+                          _controller.divisionActive = false;
                         }
                         _enumActivation = selected;
                       });
@@ -158,24 +155,16 @@ class _AFLDivisionAddState extends State<AFLDivisionAdd> {
                     SystemChannels.textInput.invokeMethod('TextInput.hide');
                     // print(divisionController.text.trim());
                     // print(_divisionActive);
-                    var _divisionName = "";
-                    if (divisionController.text.trim() != "") {
-                      _divisionName = divisionController.text.trim();
-
+                    if (_controller.divisionController.text.trim() != "") {
                       // setState(() => _IsEmptyDivName = false);
 
-                      _collection.doc(divisionController.text.trim()).set({
-                        "divisionName": divisionController.text.trim(),
-                        "active": _divisionActive,
-                      });
+                      _controller.create();
+
                       Get.back();
                     } else {
                       setState(() => _IsEmptyDivName = true);
                       return;
                     }
-
-                    // print(_divisionName);
-                    // print(_divisionActive);
                   },
                   child: const Text('Submit'),
                 ),

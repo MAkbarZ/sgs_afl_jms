@@ -102,6 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ? Icons.visibility_off
                                       : Icons.visibility,
                                   size: 15.0,
+                                  color: Colors.grey,
                                 ),
                                 onPressed: () {
                                   setState(() {

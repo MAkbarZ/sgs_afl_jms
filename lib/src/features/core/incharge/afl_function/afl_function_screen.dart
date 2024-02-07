@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../utils/get_snackbar.dart';
+import '../controllers/afl_function_controller.dart';
 import 'afl_function_add_drawer.dart';
 
 // import 'package:convert/convert.dart';
@@ -19,7 +20,7 @@ class AFLFunctionScreen extends StatefulWidget {
 }
 
 class _AFLFunctionScreenState extends State<AFLFunctionScreen> {
-  final _collection = FirebaseFirestore.instance.collection('afl_function');
+  final AFLFunctionController _controller = Get.put(AFLFunctionController());
 
   var searchFunction = "";
 
@@ -52,12 +53,13 @@ class _AFLFunctionScreenState extends State<AFLFunctionScreen> {
             ),
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
-                  stream: _collection
-                      .orderBy('functionName', descending: false)
-                      .startAt([searchFunction])
-                      .endAt(["$searchFunction\uf8ff"])
-                      .limit(20)
-                      .snapshots(),
+                  // stream: _collection
+                  //     .orderBy('functionName', descending: false)
+                  //     .startAt([searchFunction])
+                  //     .endAt(["$searchFunction\uf8ff"])
+                  //     .limit(20)
+                  //     .snapshots(),
+                  stream: _controller.getTwentyRecords(searchFunction),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       SGSSnackbar.getSnackbarRed(
@@ -128,14 +130,17 @@ class _AFLFunctionScreenState extends State<AFLFunctionScreen> {
                                           value: currentRecord['active'],
                                           onChanged: (bool currentValue) {
                                             // setState(() =>
-                                            _collection
-                                                .doc(currentRecord[
-                                                    'functionName'])
-                                                .update({
-                                              "functionName":
-                                                  currentRecord['functionName'],
-                                              "active": currentValue,
-                                            });
+                                            // _collection
+                                            //     .doc(currentRecord[
+                                            //         'functionName'])
+                                            //     .update({
+                                            //   "functionName":
+                                            //       currentRecord['functionName'],
+                                            //   "active": currentValue,
+                                            // });
+                                            _controller.updateRecord(
+                                                currentRecord['functionName'],
+                                                currentValue);
                                             // );
                                           }),
                                     ),

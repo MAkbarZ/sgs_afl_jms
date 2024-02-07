@@ -1,3 +1,6 @@
+import 'package:afljms/src/features/authentication/screens/register_screen.dart';
+import 'package:afljms/src/features/core/incharge/afl_division/afl_division_add_drawer.dart';
+import 'package:afljms/src/features/core/incharge/afl_division/afl_division_screen.dart';
 import 'package:afljms/src/utils/get_snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -26,6 +29,10 @@ class AuthenticationBackEnd extends GetxController {
   }
 
   setInitialScreen(User? user, {String? section}) {
+    Get.to(() => const RegisterScreen());
+    // Get.to(() => const AFLDivisionAdd());
+    // Get.to(() => const AFLDivisionScreen());
+    return;
     // print(user);
     if (user == null) {
       Get.to(() => SplashScreen());
@@ -61,7 +68,7 @@ class AuthenticationBackEnd extends GetxController {
   }
 
 // CREATE USER - WITH EMAIL AND PASSWORD
-  Future<String> createUserWithEmailAndPassword(
+  Future<void> createUserWithEmailAndPassword(
       String email, String password) async {
     try {
       // try CREATING NEW AUTHENTICATION
@@ -73,17 +80,16 @@ class AuthenticationBackEnd extends GetxController {
         // print(firebaseUser.value?.uid);
         //
         setInitialScreen(firebaseUser.value);
-        return "Success";
+        // return "Success";
       }
-      return "no success";
     } on FirebaseAuthException catch (e) {
       // throw FIREBASE ERROR
-      return AuthException.showException(e.code);
+      AuthException.showException(e.code);
       // print('FIREBASE AUTH EXCEPTION - ${ex.message}');
       // rethrow;
     } catch (_) {
       // throw UNKNOWN ERROR
-      return AuthException.showException(
+      AuthException.showException(
           'An Unknown error occorured. Please contact support.');
       //  rethrow;
       // print('EXCEPTION - ${ex.message}');
@@ -104,12 +110,10 @@ class AuthenticationBackEnd extends GetxController {
       // print('FIREBASE AUTH EXCEPTION - ${ex.message} \n ${e.code}');
       // errorCode = ex.message;
 
-      SGSSnackbar.getSnackbarRed("Error", AuthException.showException(e.code));
+      AuthException.showException(e.code);
     } catch (_) {
-      SGSSnackbar.getSnackbarRed(
-          "Error",
-          AuthException.showException(
-              'An Unknown error occorured. Please contact support.'));
+      AuthException.showException(
+          'An Unknown error occorured. Please contact support.');
     }
   }
 
@@ -119,15 +123,13 @@ class AuthenticationBackEnd extends GetxController {
       setInitialScreen(firebaseUser.value);
     } on FirebaseAuthException catch (e) {
       // throw FIREBASE ERROR
-      SGSSnackbar.getSnackbarRed("Error", AuthException.showException(e.code));
+      AuthException.showException(e.code);
       // print('FIREBASE AUTH EXCEPTION - ${ex.message}');
       // throw ex;
     } catch (_) {
       // throw UNKNOWN ERROR
-      SGSSnackbar.getSnackbarRed(
-          "Error",
-          AuthException.showException(
-              'An Unknown error occorured. Please contact support.'));
+      AuthException.showException(
+          'An Unknown error occorured. Please contact support.');
       // print('EXCEPTION - ${ex.message}');
     }
   }
