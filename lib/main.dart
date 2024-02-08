@@ -4,15 +4,17 @@ import 'package:flutter/material.dart';
 // import 'package:afl_jms/src/utils/theme/theme.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'src/backend/authentication/authentication_backend.dart';
 import 'src/common_widgets/horizontal_scroll.dart';
 import 'src/theme/theme.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
       .then((FirebaseApp value) => Get.put(AuthenticationBackEnd()));
+  await GetStorage.init();
   runApp(const MyApp());
 }
 

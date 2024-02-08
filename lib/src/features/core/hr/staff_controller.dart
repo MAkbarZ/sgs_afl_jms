@@ -25,11 +25,11 @@ class StaffController extends GetxController {
 
   // bool employeeActive = false;
 
-  Future<void> create(StaffModel staff) async {
+  Future<void> create(Map<String, dynamic> data) async {
     await _dbCollection
-        .doc(staff.empId)
+        .doc(data['empId'])
         .set(
-          staff.toJason(),
+          data,
         )
         .catchError((err) {
       SGSSnackbar.getSnackbarRed('Error', 'Following error occorued: \n $err');
