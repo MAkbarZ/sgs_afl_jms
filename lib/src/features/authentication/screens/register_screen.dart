@@ -1,5 +1,4 @@
 import 'package:afljms/src/enums/enums.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -22,6 +21,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool _hidePassword = true;
 
+  // staff
+  String m_empId = '';
+  String m_fullName = '';
+  String m_hiredDate = '';
+  String m_email = '';
+  String m_mobile = '';
+  String m_phone = '';
+  String m_gender = 'male';
+
+  //user
+  String m_password = '';
+
+  //staff authority
+  // String m_afl_division = '';
+  // String m_afl_function = '';
+
   bool _IsEmptyEmpID = true;
   bool _EmpIDOK = false;
   bool _IsEmptyFullName = true;
@@ -37,8 +52,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _IsEmptyPassword = true;
   bool _PasswordOK = false;
 
-  bool _inputHasError = false;
-
   String _selectedDate =
       'Enter your hired date e.g ${DateFormat.yMMMd().format(DateTime.now())}';
 
@@ -46,11 +59,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     SGSEnumGender.male, // SGSEnumActivation.deactivate
   };
 
-  String _selectedDivison = "Enter your AFL Division";
+  String m_selectedDivison = "Enter your AFL Division";
   bool _isSelectedDivison = false;
   List _divList = [];
 
-  String _selectedFunction = "Enter your AFL Function";
+  String m_selectedFunction = "Enter your AFL Function";
   bool _isSelectedFunction = false;
   List _functionList = [];
 
@@ -58,7 +71,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void initState() {
     super.initState();
 
-    _controller.genderController.text = 'male';
+    m_gender = 'male';
 
     getAllActiveDivisions();
     getAllActiveFunctions();
@@ -105,13 +118,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                         .isEmployeeID(
                                                             textValue);
 
-                                                    _IsEmptyEmpID == false &&
-                                                            _EmpIDOK == true
-                                                        ? _inputHasError = false
-                                                        : _inputHasError = true;
+                                                    if (_IsEmptyEmpID ==
+                                                            false &&
+                                                        _EmpIDOK == true) {
+                                                      m_empId = textValue;
+                                                    } else {
+                                                      m_empId = "";
+                                                    }
                                                   });
                                                 } else {
-                                                  _inputHasError = true;
                                                   setState(() =>
                                                       _IsEmptyEmpID = true);
                                                   return;
@@ -127,8 +142,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                     'Enter 15 numerical digits, only. (e.g. 02075)',
                                                     style: warningTextStyle)
                                                 : Container(),
+
                                         const SizedBox(height: 5.0),
 
+                                        //gender
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(left: 4.0),
@@ -163,11 +180,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                 setState(() {
                                                   if (selected.elementAt(0) ==
                                                       SGSEnumGender.male) {
-                                                    _controller.genderController
-                                                        .text = 'male';
+                                                    m_gender = 'male';
                                                   } else {
-                                                    _controller.genderController
-                                                        .text = 'female';
+                                                    m_gender = 'female';
                                                   }
                                                   _enumGender = selected;
                                                 });
@@ -181,14 +196,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                                         const SizedBox(height: 10.0),
 
+// Full Name
                                         SGSInputField(
                                             title: 'Full Name',
                                             hint: 'Enter your full name',
                                             isObscure: false,
                                             readonly: false,
                                             maxLength: 25,
-                                            textEditingController:
-                                                _controller.fullNameController,
+                                            // textEditingController:
+                                            //     _controller.fullNameController,
                                             // isObscure: false,
 
                                             onChanged: (textValue) {
@@ -200,13 +216,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                         .isAlphabates(
                                                             textValue);
 
-                                                    _IsEmptyFullName == false &&
-                                                            _FullNameOK == true
-                                                        ? _inputHasError = false
-                                                        : _inputHasError = true;
+                                                    if (_IsEmptyFullName ==
+                                                            false &&
+                                                        _FullNameOK == true) {
+                                                      m_fullName = textValue;
+                                                    } else {
+                                                      m_fullName = '';
+                                                    }
                                                   });
                                                 } else {
-                                                  _inputHasError = true;
                                                   setState(() =>
                                                       _IsEmptyFullName = true);
                                                   return;
@@ -239,13 +257,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                         .isPhoneNumber(
                                                             textValue);
 
-                                                    _IsEmptyPhoneNo == false &&
-                                                            _PhoneNoOK == true
-                                                        ? _inputHasError = false
-                                                        : _inputHasError = true;
+                                                    if (_IsEmptyPhoneNo ==
+                                                            false &&
+                                                        _PhoneNoOK == true) {
+                                                      m_phone = textValue;
+                                                    } else {
+                                                      m_phone = '';
+                                                    }
                                                   });
                                                 } else {
-                                                  _inputHasError = true;
                                                   setState(() =>
                                                       _IsEmptyPhoneNo = true);
                                                   return;
@@ -263,7 +283,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                 : Container(),
                                         const SizedBox(height: 5.0),
 
-                                        //
+                                        // Mobile No.
                                         SGSInputField(
                                             title: 'Mobile No.',
                                             hint: 'e.g. 0313-847-6361',
@@ -293,14 +313,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                     _MobileNoOK = Validator()
                                                         .isMobileNumber(
                                                             textValue);
-
-                                                    _IsEmptyMobileNo == false &&
-                                                            _MobileNoOK == true
-                                                        ? _inputHasError = false
-                                                        : _inputHasError = true;
+                                                    if (_IsEmptyMobileNo ==
+                                                            false &&
+                                                        _MobileNoOK == true) {
+                                                      m_mobile = textValue;
+                                                    } else {
+                                                      m_mobile = '';
+                                                    }
                                                   });
                                                 } else {
-                                                  _inputHasError = true;
                                                   setState(() =>
                                                       _IsEmptyMobileNo = true);
                                                   return;
@@ -317,7 +338,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                     style: warningTextStyle)
                                                 : Container(),
 
-                                        //
+                                        // Email
                                         const SizedBox(height: 5.0),
                                         SGSInputField(
                                             title: 'Email',
@@ -347,13 +368,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                     _EmailOK = Validator()
                                                         .isEmail(textValue);
 
-                                                    _IsEmptyEmail == false &&
-                                                            _EmailOK == true
-                                                        ? _inputHasError = false
-                                                        : _inputHasError = true;
+                                                    if (_IsEmptyEmail ==
+                                                            false &&
+                                                        _EmailOK == true) {
+                                                      m_email = textValue;
+                                                    } else {
+                                                      m_email = '';
+                                                    }
                                                   });
                                                 } else {
-                                                  _inputHasError = true;
                                                   setState(() =>
                                                       _IsEmptyEmail = true);
                                                   return;
@@ -370,7 +393,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                     style: warningTextStyle)
                                                 : Container(),
 
-                                        //
+                                        // Hired Date
                                         const SizedBox(height: 5.0),
                                         SGSInputField(
                                           title: 'Hired Date',
@@ -392,7 +415,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                         initialDate:
                                                             DateTime.now(),
                                                         firstDate:
-                                                            DateTime(2023),
+                                                            DateTime(1980),
                                                         lastDate:
                                                             DateTime(2049));
 
@@ -403,17 +426,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                             .format(
                                                                 _pickerDate);
 
-                                                    _controller.hireDate =
-                                                        int.parse(_pickerDate
-                                                                .year
-                                                                .toString() +
-                                                            NumberFormat('00',
-                                                                    'en_US')
-                                                                .format(
-                                                                    _pickerDate
-                                                                        .month) +
-                                                            _pickerDate.day
-                                                                .toString());
+                                                    m_hiredDate = _pickerDate
+                                                            .year
+                                                            .toString() +
+                                                        NumberFormat(
+                                                                '00', 'en_US')
+                                                            .format(_pickerDate
+                                                                .month) +
+                                                        _pickerDate.day
+                                                            .toString();
 
                                                     _IsEmptyHireDate = false;
                                                   } else {
@@ -473,16 +494,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                     _IsEmptyPassword = false;
                                                     _PasswordOK = Validator()
                                                         .isPassword(textValue);
-                                                    _controller
-                                                        .passwordController
-                                                        .text = textValue;
-                                                    _IsEmptyPassword == false &&
-                                                            _PasswordOK == true
-                                                        ? _inputHasError = false
-                                                        : _inputHasError = true;
+                                                    if (_IsEmptyPassword ==
+                                                            false &&
+                                                        _PasswordOK == true) {
+                                                      m_password = textValue;
+                                                    } else {
+                                                      m_password = '';
+                                                    }
                                                   });
                                                 } else {
-                                                  _inputHasError = true;
                                                   setState(() =>
                                                       _IsEmptyPassword = true);
                                                   return;
@@ -503,7 +523,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         const SizedBox(height: 5.0),
                                         SGSInputField(
                                           title: 'AFL Division',
-                                          hint: _selectedDivison,
+                                          hint: m_selectedDivison,
                                           // maxLength: 20,
                                           readonly: true,
                                           isObscure: false,
@@ -532,20 +552,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                               if (value != null ||
                                                   value != "") {
                                                 setState(() {
-                                                  _selectedDivison = value!;
+                                                  m_selectedDivison = value!;
                                                   _isSelectedDivison = true;
-                                                  _controller
-                                                      .aflDivisionController
-                                                      .text = _selectedDivison;
                                                 });
                                               } else {
                                                 setState(() {
-                                                  _selectedDivison =
+                                                  m_selectedDivison =
                                                       "Enter your AFL Division";
                                                   _isSelectedDivison = false;
-                                                  _controller
-                                                      .aflDivisionController
-                                                      .text = "";
                                                 });
                                               }
                                             },
@@ -560,7 +574,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         const SizedBox(height: 5.0),
                                         SGSInputField(
                                           title: 'AFL Function',
-                                          hint: _selectedFunction,
+                                          hint: m_selectedFunction,
                                           // maxLength: 20,
                                           readonly: true,
                                           isObscure: false,
@@ -589,20 +603,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                               if (value != null ||
                                                   value != "") {
                                                 setState(() {
-                                                  _selectedFunction = value!;
+                                                  m_selectedFunction = value!;
                                                   _isSelectedFunction = true;
-                                                  _controller
-                                                      .aflDivisionController
-                                                      .text = _selectedFunction;
                                                 });
                                               } else {
                                                 setState(() {
-                                                  _selectedFunction =
+                                                  m_selectedFunction =
                                                       "Enter your AFL Function";
                                                   _isSelectedFunction = false;
-                                                  _controller
-                                                      .aflFunctionController
-                                                      .text = "";
                                                 });
                                               }
                                             },
@@ -633,7 +641,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       //   return;
                                       // }
                                       // return null;
-                                      // _signUpController.signIn2();
+                                      print('printing start');
+                                      Map<String, dynamic> dataStaff = {};
+                                      Map<String, dynamic> dataUser = {};
+                                      Map<String, dynamic> dataAuthority = {};
+                                      if (isInputDataOK()) {
+                                        dataStaff = {
+                                          "empId": m_empId,
+                                          "fullName": m_fullName,
+                                          "hiredDate": m_hiredDate,
+                                          "email": m_email,
+                                          "mobile": m_mobile,
+                                          "phone": m_phone,
+                                          "gender": m_gender,
+                                          "approverEmpId": '',
+                                          "active": false,
+                                        };
+                                        dataUser = {
+                                          "empId": m_empId,
+                                          "isVerified": false,
+                                          "approverEmpId": '',
+                                          "active": false,
+                                        };
+                                        dataAuthority = {
+                                          "empId": m_empId,
+                                          "aflDivision": m_selectedDivison,
+                                          "aflFunction": m_selectedFunction,
+                                          "approverEmpId": '',
+                                          "active": false,
+                                        };
+                                      }
+
+                                      print(dataStaff);
+                                      print(dataUser);
+                                      print(dataAuthority);
+
+                                      _controller.createStaff(dataStaff);
+                                      _controller.createUser(dataUser);
+                                      _controller
+                                          .createAuthority(dataAuthority);
                                     },
                                     child: const Text('Submit'),
                                   ),
@@ -655,7 +701,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // FUNCTIONS
+  // METHODS
+
+  bool isInputDataOK() {
+    if (_IsEmptyEmpID == false &&
+        _EmpIDOK == true &&
+        _IsEmptyFullName == false &&
+        _FullNameOK == true &&
+        _IsEmptyPhoneNo == false &&
+        _PhoneNoOK == true &&
+        _IsEmptyMobileNo == false &&
+        _MobileNoOK == true &&
+        _IsEmptyEmail == false &&
+        _EmailOK == true &&
+        _IsEmptyHireDate == false &&
+        //  _HireDateOK == true &&
+        _IsEmptyPassword == false &&
+        _PasswordOK == true &&
+        _isSelectedDivison == true &&
+        _isSelectedFunction == true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   getAllActiveDivisions() async {
     await _controller.getActiveAFLDivisions().then((querySnapshot) {

@@ -14,7 +14,8 @@ class Validator {
   }
 
   bool isEmail(String? value) {
-    String pattern = r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+';
+    // String pattern = r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+';
+    String pattern = r'^[a-z0-9]{1,20}.{0,1}[a-z0-9]{1,20}$';
     RegExp regex = RegExp(pattern);
     if (!regex.hasMatch(value!)) {
       return false;

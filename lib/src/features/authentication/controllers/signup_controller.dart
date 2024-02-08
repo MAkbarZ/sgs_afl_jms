@@ -1,7 +1,6 @@
-import 'package:afljms/src/features/core/hr/models/staff_model.dart';
 import 'package:afljms/src/features/core/hr/staff_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
@@ -9,6 +8,8 @@ import '../../../backend/authentication/authentication_backend.dart';
 import '../../../utils/get_snackbar.dart';
 import '../../core/incharge/controllers/afl_division_controller.dart';
 import '../../core/incharge/controllers/afl_function_controller.dart';
+import 'staff_authority_controller.dart';
+import 'user_controller.dart';
 
 class SignUpController extends GetxController {
   static SignUpController get instance => Get.find();
@@ -17,32 +18,34 @@ class SignUpController extends GetxController {
   final _aflDivController = Get.put(AFLDivisionController());
   final _aflFunctionController = Get.put(AFLFunctionController());
   final _staffController = Get.put(StaffController());
+  final _staffAuthorityController = Get.put(StaffAuthorityController());
+  final _userController = Get.put(UserController());
   // final _userRepo = Get.put(UserRepository());
 
   // INPUT TEXT CONTROLLERS
-  TextEditingController employeeIdController = TextEditingController();
-  TextEditingController genderController = TextEditingController();
-  TextEditingController fullNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController phoneNoController = TextEditingController();
-  TextEditingController mobileController = TextEditingController();
-  TextEditingController employeeApproverEmpIDController =
-      TextEditingController();
-  TextEditingController userApproverEmpIDController = TextEditingController();
+  // TextEditingController employeeIdController = TextEditingController();
+  // TextEditingController genderController = TextEditingController();
+  // TextEditingController fullNameController = TextEditingController();
+  // TextEditingController emailController = TextEditingController();
+  // TextEditingController passwordController = TextEditingController();
+  // TextEditingController phoneNoController = TextEditingController();
+  // TextEditingController mobileController = TextEditingController();
+  // TextEditingController employeeApproverEmpIDController =
+  //     TextEditingController();
+  // TextEditingController userApproverEmpIDController = TextEditingController();
 
-  TextEditingController aflDivisionController = TextEditingController();
-  TextEditingController aflFunctionController = TextEditingController();
-  TextEditingController dbRoleController = TextEditingController();
-  TextEditingController authorityApproverEmpIDController =
-      TextEditingController();
+  // TextEditingController aflDivisionController = TextEditingController();
+  // TextEditingController aflFunctionController = TextEditingController();
+  // TextEditingController dbRoleController = TextEditingController();
+  // TextEditingController authorityApproverEmpIDController =
+  //     TextEditingController();
 
   // INPUT VARIABLES,, if could not be done throught controllers
-  bool employeeActive = false;
-  bool userIsVerified = false;
-  bool userActive = false;
-  bool authorityActive = false;
-  int hireDate = 0;
+  // bool employeeActive = false;
+  // bool userIsVerified = false;
+  // bool userActive = false;
+  // bool authorityActive = false;
+  // int hireDate = 0;
 
   // togle
   // void toggleShowHidePassword() {
@@ -69,12 +72,12 @@ class SignUpController extends GetxController {
   //   }
   // }
 
-  Future<void> registerAndCreateUser() async {
+  Future<void> signUp(String email, String password) async {
     // validateBeforeContinue();
     try {
       await _authRepo.createUserWithEmailAndPassword(
-        emailController.text.trim(),
-        passwordController.text.trim(),
+        email,
+        password,
       );
       // final UserModel user;
       // final user = UserModel(
@@ -88,7 +91,7 @@ class SignUpController extends GetxController {
       // print(user);
       // await _userRepo.createUser(user);
       //get current user
-      // print(_authRepo.firebaseUser.value);
+      print(_authRepo.firebaseUser.value);
 
       _authRepo.setInitialScreen(FirebaseAuth.instance.currentUser);
     } catch (e) {
@@ -110,25 +113,22 @@ class SignUpController extends GetxController {
     return await _aflFunctionController.getActiveAFLFunctions();
   }
 
-  Future<void> createStaff() async {
-    StaffModel staff = StaffModel(
-        empId: employeeIdController.text.trim(),
-        fullName: fullNameController.text.trim(),
-        hiredDate: hireDate,
-        email: emailController.text.trim(),
-        mobile: mobileController.text.trim(),
-        phone: phoneNoController.text.trim(),
-        gender: genderController.text.trim(),
-        approverEmpId: '0',
-        active: false);
-    print(staff);
-    // _staffController.create(staff);
+  Future<void> createStaff(Map<String, dynamic> dataStaff) async {
+    await _staffController.create(dataStaff);
+  }
+
+  Future<void> createUser(Map<String, dynamic> dataUser) async {
+    await _userController.create(dataUser);
+  }
+
+  Future<void> createAuthority(Map<String, dynamic> dataAuthority) async {
+    await _staffAuthorityController.create(dataAuthority);
   }
 
 // // LOGOUT
-//   void logout() {
-//     _authRepo.logout();
-//   }
+  void logout() {
+    _authRepo.logout();
+  }
 
 //
 }

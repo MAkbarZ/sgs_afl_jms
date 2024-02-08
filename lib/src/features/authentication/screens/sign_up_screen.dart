@@ -6,7 +6,6 @@ import '../../../common_widgets/input_field.dart';
 import '../../../theme/widget_theme/text_theme.dart';
 import '../../../utils/text_input_validator.dart';
 import '../controllers/signup_controller.dart';
-import 'login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -16,186 +15,247 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  bool hidePassword = true;
+  final SignUpController _controller = Get.put(SignUpController());
+
+  bool _hidePassword = true;
+
+  String m_email = '';
+  String m_password = '';
+
+  bool _IsEmptyEmail = true;
+  bool _EmailOK = false;
+
+  bool _IsEmptyPassword = true;
+  bool _PasswordOK = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    SignUpController _signUpController = Get.put(SignUpController());
-
     final screenWidth = MediaQuery.of(context).size.width;
 
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              padding: const EdgeInsets.all(30.0),
-              width: screenWidth <= 300.0 ? double.infinity : 350.0,
-              color: Colors.white,
+          child: Column(
+            children: [
+              logoAndHeader,
 
-              // Master Column
-              child: Column(children: [
-                const Image(
-                  image: AssetImage("assets/images/sgs_logo.png"),
-                  width: 150.0,
-                ),
-                const SizedBox(height: 15.0),
-                Text(
-                  'SIGN UP',
-                  textAlign: TextAlign.center,
-                  style: SGSTextTheme.titleStyle20,
-                ),
-                const SizedBox(height: 10.0),
-                Text(
-                  'and, start your journey with SGS...',
-                  textAlign: TextAlign.center,
-                  style: SGSTextTheme.normalStyle13,
-                ),
-                const SizedBox(height: 20.0),
-                // SignUpFormWidget(),
-                // LoginFooterWidget()
-
-                // FORM CONTROLS
-                SizedBox(
-                  width: double.infinity,
-                  // color: Colors.black54,
+              //body
+              Center(
+                child: Container(
+                  padding: const EdgeInsets.all(30.0),
+                  width: screenWidth <= 300.0 ? double.infinity : 350.0,
                   child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SGSInputField(
-                          title: 'Full Name',
-                          hint: 'Enter your full name',
-                          isObscure: false,
-                          readonly: false,
-                          maxLength: 25,
-                          textEditingController:
-                              _signUpController.fullNameController,
-                          // isObscure: false,
-                          validator: (value) {
-                            // if (Validator().isEmpty(value)) {
-                            //   return 'Please enter your full name';
-                            // }
-
-                            if (Validator().isAlphabates(value)) {
-                              return 'Name must be in engish alphabates';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 1.0),
-                        SGSInputField(
-                          title: 'Mobile No.',
-                          hint: 'Enter your Mobile No. e.g. 03001234567',
-                          maxLength: 15,
-                          isObscure: false,
-                          readonly: false,
-                          textEditingController:
-                              _signUpController.phoneNoController,
-                          // isObscure: false,
-                          validator: (value) {
-                            if (Validator().isEmpty(value)) {
-                              return 'Please enter your Mobile No.';
-                            }
-
-                            if (Validator().isPhoneNumber(value)) {
-                              return 'Enter 11 numerical digits, only';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 1.0),
-                        SGSInputField(
-                          title: 'Email',
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Email
+                      const SizedBox(height: 5.0),
+                      SGSInputField(
+                          title: 'Email - without @sgs.com',
                           hint: 'Enter your email',
                           readonly: false,
                           isObscure: false,
-                          maxLength: 25,
-                          textEditingController:
-                              _signUpController.emailController,
+                          maxLength: 20,
+                          // textEditingController:
+                          //     _signUpController
+                          //         .emailController,
                           // isObscure: false,
-                          validator: (value) {
-                            if (Validator().isEmpty(value)) {
-                              return 'Please enter your email address';
-                            }
+                          // validator: (value) {
+                          //   if (Validator().isEmpty(value)) {
+                          //     return 'Please enter your email address';
+                          //   }
 
-                            if (Validator().isEmail(value)) {
-                              return 'Please enter correctly formatted Email';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 1.0),
-                        SGSInputField(
+                          //   if (Validator().isEmail(value)) {
+                          //     return 'Please enter correctly formatted Email';
+                          //   }
+                          //   return null;
+                          // },
+                          onChanged: (textValue) {
+                            setState(() {
+                              if (textValue.trim() != "") {
+                                setState(() {
+                                  _IsEmptyEmail = false;
+                                  _EmailOK = Validator().isEmail(textValue);
+
+                                  if (_IsEmptyEmail == false &&
+                                      _EmailOK == true) {
+                                    m_email = textValue;
+                                  } else {
+                                    m_email = '';
+                                  }
+                                });
+                              } else {
+                                setState(() => _IsEmptyEmail = true);
+                                return;
+                              }
+                            });
+                          }),
+                      _IsEmptyEmail
+                          ? Text("Please enter your Email address.",
+                              style: warningTextStyle)
+                          : _EmailOK == false
+                              ? Text('Please enter correctly formatted Email',
+                                  style: warningTextStyle)
+                              : Container(),
+
+                      // PASSWORD
+                      const SizedBox(height: 5.0),
+                      SGSInputField(
                           title: 'Password',
                           hint: 'Enter your password',
                           maxLength: 20,
                           readonly: false,
-                          textEditingController:
-                              _signUpController.passwordController,
-                          isObscure: hidePassword,
-                          validator: (value) {
-                            if (Validator().isEmpty(value)) {
-                              return 'Please enter your password';
-                            }
+                          // textEditingController:
+                          //     _signUpController
+                          //         .passwordController,
+                          isObscure: _hidePassword,
+                          // validator: (value) {
+                          //   if (Validator().isEmpty(value)) {
+                          //     return 'Please enter your password';
+                          //   }
 
-                            if (Validator().isPassword(value)) {
-                              return 'Password must be at least 6 characters.';
-                            }
-                            return null;
-                          },
+                          //   if (Validator()
+                          //       .isPassword(value)) {
+                          //     return 'Password must be at least 6 characters.';
+                          //   }
+                          //   return null;
+                          // },
                           suffixIcon: IconButton(
                               icon: Icon(
-                                hidePassword
+                                _hidePassword
                                     ? Icons.visibility_off
                                     : Icons.visibility,
                                 size: 15.0,
+                                color: Colors.grey,
                               ),
                               // onPressed: () => _signUpController.toggleShowHidePassword(),
                               onPressed: () {
                                 setState(() {
-                                  hidePassword = !hidePassword;
+                                  _hidePassword = !_hidePassword;
                                 });
                               }),
-                        ),
-                        const SizedBox(height: 15.0),
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              SystemChannels.textInput
-                                  .invokeMethod('TextInput.hide');
+                          onChanged: (textValue) {
+                            setState(() {
+                              if (textValue.trim() != "") {
+                                setState(() {
+                                  _IsEmptyPassword = false;
+                                  _PasswordOK =
+                                      Validator().isPassword(textValue);
+                                  if (_IsEmptyPassword == false &&
+                                      _PasswordOK == true) {
+                                    m_password = textValue;
+                                  } else {
+                                    m_password = '';
+                                  }
+                                });
+                              } else {
+                                setState(() => _IsEmptyPassword = true);
+                                return;
+                              }
+                            });
+                          }),
+                      _IsEmptyPassword
+                          ? Text("Please enter your Password.",
+                              style: warningTextStyle)
+                          : _PasswordOK == false
+                              ? Text('Password must be at least 6 characters.',
+                                  style: warningTextStyle)
+                              : Container(),
 
-                              _signUpController.registerAndCreateUser();
+                      // SUBMIT BUTTON
+                      Container(
+                        margin: const EdgeInsets.only(top: 30.0),
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            SystemChannels.textInput
+                                .invokeMethod('TextInput.hide');
 
-                              // return null;
-                              // _signUpController.signIn2();
-                            },
-                            child: const Text('Submit'),
-                          ),
-                        ),
-                        const SizedBox(height: 15.0),
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              SystemChannels.textInput
-                                  .invokeMethod('TextInput.hide');
+                            print('printing start');
 
-                              // return null;
-                              // _signUpController.login();
-                              Get.to(() => const LoginScreen());
-                            },
-                            child: const Text('Login'),
-                          ),
+                            Map<String, dynamic> dataUser = {};
+
+                            if (isInputDataOK()) {
+                              dataUser = {
+                                "email": m_email,
+                                "password": m_password,
+                                "isVerified": false,
+                                "approverEmpId": '',
+                                "active": false,
+                              };
+                            }
+                            print(dataUser);
+                            print('${m_email}@sgs.com');
+                            _controller.createUser(dataUser);
+                            _controller.signUp(
+                                '${m_email}@sgs.com', m_password);
+                          },
+                          child: const Text('Submit'),
                         ),
-                      ]),
+                      ),
+                    ],
+                  ),
                 ),
-
-                // end of master column
-              ]),
-            ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
+
+  // METHODS
+
+  bool isInputDataOK() {
+    if (_IsEmptyEmail == false &&
+        _EmailOK == true &&
+        _IsEmptyPassword == false &&
+        _PasswordOK == true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // VARIABLES
+
+  TextStyle warningTextStyle =
+      const TextStyle(color: Colors.red, fontSize: 9.0);
+
+  var logoAndHeader = Container(
+    padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+    margin: const EdgeInsets.only(bottom: 10.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        const Image(
+          image: AssetImage("assets/images/sgs_logo.png"),
+          width: 100.0,
+        ),
+        const SizedBox(width: 20.0),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'SIGN UP',
+              textAlign: TextAlign.start,
+              style: SGSTextTheme.titleStyle20,
+            ),
+            // const SizedBox(height: 10.0),
+            Text(
+              "let's start...",
+              textAlign: TextAlign.start,
+              style: SGSTextTheme.normalStyle13,
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+
+//
 }

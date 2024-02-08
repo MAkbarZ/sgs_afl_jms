@@ -1,21 +1,26 @@
 import 'package:afljms/src/features/authentication/screens/register_screen.dart';
+import 'package:afljms/src/features/authentication/screens/user_admin_screen.dart';
 import 'package:afljms/src/features/core/incharge/afl_division/afl_division_add_drawer.dart';
 import 'package:afljms/src/features/core/incharge/afl_division/afl_division_screen.dart';
-import 'package:afljms/src/utils/get_snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../features/authentication/screens/email_verification.dart';
 import '../../features/authentication/screens/login_screen.dart';
+import '../../features/authentication/screens/sign_up_screen.dart';
 import '../../features/authentication/screens/splash_screen.dart';
 import '../../features/core/incharge/incharge.dart';
 import 'auth_exception.dart';
 
 class AuthenticationBackEnd extends GetxController {
   static AuthenticationBackEnd get instance => Get.find();
-  // VARIABLES
+
   final _firebaseAuth = FirebaseAuth.instance;
   late final Rx<User?> firebaseUser;
+
+  final box = GetStorage();
+
   // var phoneVerificationId = ''.obs;
   String errorCode = '';
 
@@ -28,27 +33,54 @@ class AuthenticationBackEnd extends GetxController {
     setInitialScreen(firebaseUser.value);
   }
 
+  getUpdatedPrivileges(User? user) {
+    // USE GET_STORAGE() TO STORE USER Privileges
+    box.write('userUID', user!.uid);
+    box.write('privilege', user!.uid);
+
+    box.write('userEmail', user!.email);
+    box.write('userEmail', user!.email);
+  }
+
   setInitialScreen(User? user, {String? section}) {
-    Get.to(() => const RegisterScreen());
+    print('User is \n$user');
+
+    // Get.to(() => const AdminScreen());
+    // Get.to(() => const SignUpScreen());
+    // Get.to(() => const RegisterScreen());
     // Get.to(() => const AFLDivisionAdd());
     // Get.to(() => const AFLDivisionScreen());
-    return;
     // print(user);
+    // return;
     if (user == null) {
-      Get.to(() => SplashScreen());
+      print('User is $user');
+      Get.offAll(() => const UserAdminScreen());
       // Get.to(() => const SignUpScreen());
     }
 
-    if (user != null && user.email == 'm.akbar6@outlook.com') {
-      //  ||  user.email == 'incharge@sgs.com') {
-      // print('user is incharge');
-      Get.off(() => const InchargeDashboard());
-      // Get.offAll(() => const DashboardScreen(
-      //       title: 'Dashboard',
-      //     ));
-      // Get.offAll(() => const CRUDMain());
-      // Get.to(() => const LoginScreen());
+    if (user != null) {
+      print('User is \n$user');
+      Get.offAll(() => const UserAdminScreen());
+      // Get.to(() => const SignUpScreen());
     }
+
+//  if (user != null && user.email == 'master@sgs.com') {
+//       //  ||  user.email == 'incharge@sgs.com') {
+//       // print('user is incharge');
+//       Get.off(() => const AdminScreen());
+//  }
+
+    // if (user != null && user.email == 'm.akbar6@outlook.com') {
+    //   //  ||  user.email == 'incharge@sgs.com') {
+    //   // print('user is incharge');
+
+    //   Get.off(() => const InchargeDashboard());
+    //   // Get.offAll(() => const DashboardScreen(
+    //   //       title: 'Dashboard',
+    //   //     ));
+    //   // Get.offAll(() => const CRUDMain());
+    //   // Get.to(() => const LoginScreen());
+    // }
 
     // if (user != null && user.emailVerified) {
     //   // get user's role
@@ -62,9 +94,9 @@ class AuthenticationBackEnd extends GetxController {
     //   // go to Splash Screen
     // }
 
-    if (user != null && !user.emailVerified) {
-      Get.offAll(() => const EmailVerification());
-    }
+    // if (user != null && !user.emailVerified) {
+    //   Get.offAll(() => const EmailVerification());
+    // }
   }
 
 // CREATE USER - WITH EMAIL AND PASSWORD
