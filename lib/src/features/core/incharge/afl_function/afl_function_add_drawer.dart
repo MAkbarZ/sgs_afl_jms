@@ -25,6 +25,8 @@ class _AFLFunctionAddState extends State<AFLFunctionAdd> {
     // SGSEnumActivation.deactivate
   };
 
+  final double _defaultInputWidth = 300.0;
+
   @override
   void initState() {
     super.initState();
@@ -58,6 +60,7 @@ class _AFLFunctionAddState extends State<AFLFunctionAdd> {
                   title: 'Function Name',
                   hint: 'Function Name',
                   maxLength: 15,
+                  width: _defaultInputWidth,
                   readonly: false,
                   isObscure: false,
                   // suffixIcon: IconButton(

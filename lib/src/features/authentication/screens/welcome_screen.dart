@@ -60,7 +60,7 @@ class WelcomeScreen extends StatelessWidget {
                         onPressed: () {
                           Get.to(() => const SignUpScreen());
                         },
-                        child: const Text('Register'),
+                        child: const Text('Sign Up'),
                       ),
                     ),
                   ],

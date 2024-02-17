@@ -18,12 +18,14 @@ class SGSAppTheme {
   static const Color greySectionBG = Color(0xFF3c515b);
 
 // Text - Heading
-  static const Color greyHeading = Color(0xFF252525);
+  static const Color greyHeading = Color.fromARGB(255, 105, 105, 105);
 // Text - Paragraph
   static const Color greyParaText = Color(0xFF555555);
 
 // Text - hints - e.g. Business News . Knowledge
   static const Color bluishGrey = Color(0xFF49738B);
+
+  static const Color disabledTextBG = Color.fromARGB(255, 224, 215, 212);
 
   static ThemeData theme = ThemeData(
     brightness: Brightness.light,

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:afljms/src/backend/authentication/authentication_backend.dart';
+import 'package:afljms/src/utils/get_snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
@@ -30,10 +31,14 @@ class EmailVerifyController extends GetxController {
       final currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser!.emailVerified) {
         timer.cancel();
+        AuthenticationBackEnd.instance.updateUser({"isVerified": true});
         AuthenticationBackEnd.instance.setInitialScreen(currentUser);
       }
     });
   }
 
-  void manuallyCheckEmailVerificationStatus() {}
+  void manuallyCheckEmailVerificationStatus() {
+    SGSSnackbar.getSnackbarGreen(
+        'Signup Success', 'You are now re-directed to next step');
+  }
 }

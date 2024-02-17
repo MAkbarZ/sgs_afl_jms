@@ -14,6 +14,9 @@ class AuthException {
         // return const AuthException('Please enter a strong password.');
         SGSSnackbar.getSnackbarRed('Error', 'Please enter a strong password.');
         break;
+      case 'wrong-password':
+        SGSSnackbar.getSnackbarRed('Error', 'Please enter correct password.');
+        break;
       case 'missing-password':
         SGSSnackbar.getSnackbarRed('Error', 'Please enter password.');
         break;
@@ -35,6 +38,15 @@ class AuthException {
       case 'user-disabled':
         SGSSnackbar.getSnackbarRed(
             'Error', 'This user has been disabled. Please contact support.');
+        break;
+      case 'user-not-found':
+        SGSSnackbar.getSnackbarRed(
+            'Error', 'This user has could not be found. Please register.');
+        break;
+
+      case 'unknown':
+        SGSSnackbar.getSnackbarRed('Error',
+            'The supplied auth credential is incorrect, malformed or has expired.');
         break;
       default:
         // return const AuthException(;

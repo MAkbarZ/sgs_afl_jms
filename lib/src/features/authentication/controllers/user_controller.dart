@@ -37,6 +37,9 @@ class UserController extends GetxController {
   //   });
   // }
 
+  Future<void> updateUser(Map<String, dynamic> data) {
+    return _dbCollection.doc(data['uid']).update(data);
+  }
   // Future<void> updateRecord(String divisionName, bool active) {
   //   return _dbCollection.doc(divisionName).update({
   //     "divisionName": divisionName,

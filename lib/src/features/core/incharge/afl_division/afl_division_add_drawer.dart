@@ -26,6 +26,8 @@ class _AFLDivisionAddState extends State<AFLDivisionAdd> {
     // SGSEnumActivation.deactivate
   };
 
+  final double _defaultInputWidth = 300.0;
+
   @override
   void initState() {
     super.initState();
@@ -59,6 +61,7 @@ class _AFLDivisionAddState extends State<AFLDivisionAdd> {
                   title: 'Division Name',
                   hint: 'Division Name',
                   maxLength: 15,
+                  width: _defaultInputWidth,
                   readonly: false,
                   isObscure: false,
                   // suffixIcon: IconButton(

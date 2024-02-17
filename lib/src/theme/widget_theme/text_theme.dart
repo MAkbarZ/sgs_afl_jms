@@ -42,6 +42,14 @@ class SGSTextTheme {
     decoration: TextDecoration.none,
   );
 
+  static TextStyle headingStyle11 = const TextStyle(
+    fontFamily: 'Arial',
+    fontSize: 11.0,
+    fontWeight: FontWeight.w800,
+    color: SGSAppTheme.greyHeading,
+    decoration: TextDecoration.none,
+  );
+
   static TextStyle normalStyle13 = const TextStyle(
     fontFamily: 'Arial',
     fontSize: 13.0,

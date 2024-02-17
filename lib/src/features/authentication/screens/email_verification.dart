@@ -47,31 +47,32 @@ class _EmailVerificationState extends State<EmailVerification> {
                 style: SGSTextTheme.normalStyle13,
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 30.0),
-              SizedBox(
-                width: 200,
-                child: OutlinedButton(
-                    child: const Text('Continue'),
-                    onPressed: () => emailVerifyController
-                        .manuallyCheckEmailVerificationStatus()),
-              ),
-              const SizedBox(height: 30.0),
-              TextButton(
-                onPressed: () => emailVerifyController.sendVerificationEmail(),
-                child: const Text('Resend Email Link'),
-              ),
-              const SizedBox(height: 20.0),
-              TextButton(
-                onPressed: () => AuthenticationBackEnd.instance.logout(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.navigate_before),
-                    const SizedBox(width: 5),
-                    Text('back to login'.tr.toLowerCase()),
-                  ],
-                ),
-              ),
+              // const SizedBox(height: 30.0),
+              // SizedBox(
+              //   width: 200,
+              //   child: OutlinedButton(
+              //     child: const Text('Continue'),
+              //     onPressed: () => emailVerifyController
+              //         .manuallyCheckEmailVerificationStatus(),
+              //   ),
+              // ),
+              // const SizedBox(height: 30.0),
+              // TextButton(
+              //   onPressed: () => emailVerifyController.sendVerificationEmail(),
+              //   child: const Text('Resend Email Link'),
+              // ),
+              // const SizedBox(height: 20.0),
+              // TextButton(
+              //   onPressed: () => AuthenticationBackEnd.instance.logout(),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       const Icon(Icons.navigate_before),
+              //       const SizedBox(width: 5),
+              //       Text('back to login'.tr.toLowerCase()),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ),

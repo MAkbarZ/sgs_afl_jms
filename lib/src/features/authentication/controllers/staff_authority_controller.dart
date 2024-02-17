@@ -7,7 +7,8 @@ import '../../../utils/get_snackbar.dart';
 class StaffAuthorityController extends GetxController {
   static StaffAuthorityController get instance => Get.find();
 
-  final _dbCollection = FirebaseFirestore.instance.collection('users');
+  final _dbCollection =
+      FirebaseFirestore.instance.collection('employee_authority');
 
   Future<void> create(Map<String, dynamic> data) async {
     await _dbCollection

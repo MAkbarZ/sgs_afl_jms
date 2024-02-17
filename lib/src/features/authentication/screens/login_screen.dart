@@ -1,3 +1,4 @@
+import 'package:afljms/src/features/core/employee/employee_register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool hidePassword = true;
+
+  final double _defaultInputWidth = 300.0;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Form(
                   key: _loginController.loginFormKey,
                   child: SizedBox(
-                    width: double.infinity,
+                    width: 300.0,
                     // color: Colors.black54,
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,6 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             title: 'Email',
                             hint: 'Enter your email',
                             maxLength: 25,
+                            width: _defaultInputWidth,
                             textEditingController:
                                 _loginController.emailController,
                             isObscure: false,
@@ -91,6 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           SGSInputField(
                             title: 'Password',
                             hint: 'Enter your password',
+                            width: 300,
                             readonly: false,
                             maxLength: 20,
                             textEditingController:
@@ -118,6 +123,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                 SystemChannels.textInput
                                     .invokeMethod('TextInput.hide');
                                 _loginController.login();
+                              },
+                              child: const Text('Login'),
+                            ),
+                          ),
+                          const SizedBox(height: 15.0),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                SystemChannels.textInput
+                                    .invokeMethod('TextInput.hide');
+                                Get.to(() => const EmployeeRegisterScreen());
                               },
                               child: const Text('Login'),
                             ),

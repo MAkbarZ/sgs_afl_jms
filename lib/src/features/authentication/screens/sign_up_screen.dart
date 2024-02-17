@@ -28,6 +28,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _IsEmptyPassword = true;
   bool _PasswordOK = false;
 
+  final double _defaultInputWidth = 300.0;
+
   @override
   void initState() {
     super.initState();
@@ -55,15 +57,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       // Email
                       const SizedBox(height: 5.0),
                       SGSInputField(
-                          title: 'Email - without @sgs.com',
-                          hint: 'Enter your email',
+                          title: 'Email ID',
+                          hint: 'Enter your email (without "@sgs.com")',
                           readonly: false,
                           isObscure: false,
                           maxLength: 20,
+                          width: _defaultInputWidth,
                           // textEditingController:
                           //     _signUpController
                           //         .emailController,
-                          // isObscure: false,
+
                           // validator: (value) {
                           //   if (Validator().isEmpty(value)) {
                           //     return 'Please enter your email address';
@@ -108,6 +111,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           title: 'Password',
                           hint: 'Enter your password',
                           maxLength: 20,
+                          width: _defaultInputWidth,
                           readonly: false,
                           // textEditingController:
                           //     _signUpController
@@ -175,24 +179,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             SystemChannels.textInput
                                 .invokeMethod('TextInput.hide');
 
-                            print('printing start');
-
-                            Map<String, dynamic> dataUser = {};
-
                             if (isInputDataOK()) {
-                              dataUser = {
-                                "email": m_email,
-                                "password": m_password,
-                                "isVerified": false,
-                                "approverEmpId": '',
-                                "active": false,
-                              };
+                              _controller.signUp('${m_email.trim()}@sgs.com',
+                                  m_password.trim());
                             }
-                            print(dataUser);
-                            print('${m_email}@sgs.com');
-                            _controller.createUser(dataUser);
-                            _controller.signUp(
-                                '${m_email}@sgs.com', m_password);
                           },
                           child: const Text('Submit'),
                         ),
@@ -247,7 +237,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             // const SizedBox(height: 10.0),
             Text(
-              "let's start...",
+              "Let's start...",
               textAlign: TextAlign.start,
               style: SGSTextTheme.normalStyle13,
             ),

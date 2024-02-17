@@ -28,6 +28,8 @@ class UuseMmanagerAddScreenState extends State<UserAdminAddScreen> {
   bool _isEmptyAproverEmpId = true;
   bool _approverEmpIdOK = false;
 
+  final double _defaultInputWidth = 300.0;
+
   @override
   void initState() {
     super.initState();
@@ -60,6 +62,7 @@ class UuseMmanagerAddScreenState extends State<UserAdminAddScreen> {
                   title: 'Employee ID',
                   hint: 'e.g. 02075',
                   maxLength: 10,
+                  width: _defaultInputWidth,
                   isObscure: false,
                   readonly: false,
                   onChanged: (textValue) {
@@ -95,6 +98,7 @@ class UuseMmanagerAddScreenState extends State<UserAdminAddScreen> {
                   title: "Approver's Employee ID",
                   hint: 'e.g. 02001',
                   maxLength: 10,
+                  width: _defaultInputWidth,
                   isObscure: false,
                   readonly: false,
                   onChanged: (textValue) {

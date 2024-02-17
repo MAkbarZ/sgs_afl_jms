@@ -1,16 +1,20 @@
-import 'package:afljms/src/features/authentication/screens/register_screen.dart';
+import 'package:afljms/src/features/core/employee/employee_register_screen.dart';
 import 'package:afljms/src/features/authentication/screens/user_admin_screen.dart';
 import 'package:afljms/src/features/core/incharge/afl_division/afl_division_add_drawer.dart';
 import 'package:afljms/src/features/core/incharge/afl_division/afl_division_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../features/authentication/screens/email_verification.dart';
 import '../../features/authentication/screens/login_screen.dart';
+import '../../features/authentication/screens/master_screen.dart';
 import '../../features/authentication/screens/sign_up_screen.dart';
 import '../../features/authentication/screens/splash_screen.dart';
+import '../../features/authentication/screens/welcome_screen.dart';
 import '../../features/core/incharge/incharge.dart';
+import '../../utils/get_snackbar.dart';
 import 'auth_exception.dart';
 
 class AuthenticationBackEnd extends GetxController {
@@ -18,11 +22,14 @@ class AuthenticationBackEnd extends GetxController {
 
   final _firebaseAuth = FirebaseAuth.instance;
   late final Rx<User?> firebaseUser;
-
+  User? currentUser;
   final box = GetStorage();
 
   // var phoneVerificationId = ''.obs;
   String errorCode = '';
+
+  final _userDBCollection = FirebaseFirestore.instance.collection('users');
+  Map<String, dynamic> _userData = {};
 
   @override
   void onReady() {
@@ -30,74 +37,99 @@ class AuthenticationBackEnd extends GetxController {
     firebaseUser.bindStream(_firebaseAuth.userChanges());
     // ever(firebaseUser, setInitialScreen(firebaseUser.value));
     // Get.to(() => const EmailVerification());
+
     setInitialScreen(firebaseUser.value);
   }
 
-  getUpdatedPrivileges(User? user) {
-    // USE GET_STORAGE() TO STORE USER Privileges
-    box.write('userUID', user!.uid);
-    box.write('privilege', user!.uid);
+  // getUpdatedPrivileges(User? user) {
+  //   // USE GET_STORAGE() TO STORE USER Privileges
+  //   box.write('userUID', user!.uid);
+  //   box.write('privilege', user!.uid);
+  //   box.write('userEmail', user!.email);
+  //   box.write('userEmail', user!.email);
+  // }
 
-    box.write('userEmail', user!.email);
-    box.write('userEmail', user!.email);
+  setInitialScreen(User? user) async {
+    print('Logged in user is \n$user');
+
+    if (user?.uid == 'oNnZgAboUhc4t7xD3bzfjGP7zr32') {
+      // user is MASTER
+      print('user is Master');
+      Get.offAll(() => const MasterScreen());
+      return;
+    } else if (user?.uid == 't9hEMybV5EMfCIYLuMj59uQxYlR2') {
+      print('user is SuperAdmin');
+      // user is SuperAdmin
+      // Get.offAll(() => const SuperAdminScreen());
+      Get.offAll(() => const InchargeDashboard());
+      return;
+    } else if (user?.uid == 'q4S1UNEMQ1PNGLgnlLmUHDo5dpD3') {
+      print('user is Admin');
+      // user is Admin
+      Get.offAll(() => const InchargeDashboard());
+      return;
+
+      //
+    } else if (user != null) {
+      currentUser = user;
+      print('user is not null');
+      // getUserDoc(user.uid);
+      if (user.emailVerified == true) {
+        print('user is VERIFIED');
+        // go to related dashboard
+        Get.offAll(() => const EmployeeRegisterScreen());
+      } else if (user.emailVerified == false) {
+        print('user is NOT VERIFIED');
+
+        Get.offAll(() => const EmailVerification());
+      }
+    } else if (user == null) {
+      print('user is NULL');
+      Get.offAll(() => SplashScreen());
+      // Get.offAll(() => const LoginScreen());
+
+      // USER IS NONE OF ABOVE
+    } else {
+      print('else if');
+      return;
+    }
   }
 
-  setInitialScreen(User? user, {String? section}) {
-    print('User is \n$user');
-
-    // Get.to(() => const AdminScreen());
-    // Get.to(() => const SignUpScreen());
-    // Get.to(() => const RegisterScreen());
-    // Get.to(() => const AFLDivisionAdd());
-    // Get.to(() => const AFLDivisionScreen());
-    // print(user);
-    // return;
-    if (user == null) {
-      print('User is $user');
-      Get.offAll(() => const UserAdminScreen());
-      // Get.to(() => const SignUpScreen());
-    }
-
-    if (user != null) {
-      print('User is \n$user');
-      Get.offAll(() => const UserAdminScreen());
-      // Get.to(() => const SignUpScreen());
-    }
-
-//  if (user != null && user.email == 'master@sgs.com') {
-//       //  ||  user.email == 'incharge@sgs.com') {
-//       // print('user is incharge');
-//       Get.off(() => const AdminScreen());
-//  }
-
-    // if (user != null && user.email == 'm.akbar6@outlook.com') {
-    //   //  ||  user.email == 'incharge@sgs.com') {
-    //   // print('user is incharge');
-
-    //   Get.off(() => const InchargeDashboard());
-    //   // Get.offAll(() => const DashboardScreen(
-    //   //       title: 'Dashboard',
-    //   //     ));
-    //   // Get.offAll(() => const CRUDMain());
-    //   // Get.to(() => const LoginScreen());
-    // }
-
-    // if (user != null && user.emailVerified) {
-    //   // get user's role
-    //   // and
-    //   // redirect user to specific Dashboard...
-    //   // print('user is verified. !!!');
-    //   Get.offAll(() => const BDDashboard());
-    //   // Get.offAll(() => const Dashboard());
-
-    //   // if user has logged in but email IS NOT verified
-    //   // go to Splash Screen
-    // }
-
-    // if (user != null && !user.emailVerified) {
-    //   Get.offAll(() => const EmailVerification());
-    // }
+  Future<void> createAUserDoc(Map<String, dynamic> data) async {
+    await _userDBCollection
+        .doc(data['uid'])
+        .set(
+          data,
+        )
+        .catchError((err) {
+      SGSSnackbar.getSnackbarRed('Error', 'Following error occorued: \n $err');
+    });
   }
+
+  Future<void> updateUser(Map<String, dynamic> data) {
+    return _userDBCollection.doc(currentUser?.uid).update(data);
+  }
+
+  // getUserDoc(String userUid) {
+  //   _userDBCollection.where('uid', isEqualTo: userUid).get().then(
+  //     (querySnapshot) {
+  //       for (var docSnapshot in querySnapshot.docs) {
+  //         print('UPDATED ${docSnapshot.id} => ${docSnapshot.data()}');
+  //       }
+  //       return querySnapshot;
+  //     },
+  //     onError: (e) => print("Error getting User Doc: $e"),
+  //     // value.docs.forEach((element) {
+  //     //   print("element is $element");
+  //     //   print("element id is ${element.id}");
+  //     // });
+  //     // throw 'hi hui';
+  //     // }
+  //   );
+  //   //   .catchError((err) {
+  //   // SGSSnackbar.getSnackbarRed('Error', 'Following error occorued: \n $err');
+  //   // });
+  // }
 
 // CREATE USER - WITH EMAIL AND PASSWORD
   Future<void> createUserWithEmailAndPassword(
@@ -106,11 +138,28 @@ class AuthenticationBackEnd extends GetxController {
       // try CREATING NEW AUTHENTICATION
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
+      //     .catchError((err) {
+      //   print('Error: $err'); // Prints 401.
+      //   SGSSnackbar.getSnackbarRed('Error',
+      //       'Sign Up failed. Please contact support. \n Error message: $err');
+      // });
 
       // navigate to...
       if (firebaseUser.value != null) {
         // print(firebaseUser.value?.uid);
-        //
+
+        _userData = {
+          "email": firebaseUser.value?.email,
+          "empId": '',
+          "isVerified": firebaseUser.value?.emailVerified,
+          "active": false,
+          "uid": firebaseUser.value?.uid,
+          "approverEmpId": '',
+          "approverEmail": '',
+        };
+        // print(_userData);
+        createAUserDoc(_userData);
+
         setInitialScreen(firebaseUser.value);
         // return "Success";
       }
@@ -119,10 +168,10 @@ class AuthenticationBackEnd extends GetxController {
       AuthException.showException(e.code);
       // print('FIREBASE AUTH EXCEPTION - ${ex.message}');
       // rethrow;
-    } catch (_) {
+    } catch (ee) {
       // throw UNKNOWN ERROR
-      AuthException.showException(
-          'An Unknown error occorured. Please contact support.');
+      SGSSnackbar.getSnackbarRed('Error during signup',
+          'An Unknown error occured. Please contact support. \n$ee');
       //  rethrow;
       // print('EXCEPTION - ${ex.message}');
     }
@@ -132,7 +181,7 @@ class AuthenticationBackEnd extends GetxController {
       String email, String password) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
+          email: email.trim(), password: password.trim());
       // return "Success";
       setInitialScreen(firebaseUser.value);
     } on FirebaseAuthException catch (e) {
@@ -141,29 +190,29 @@ class AuthenticationBackEnd extends GetxController {
 
       // print('FIREBASE AUTH EXCEPTION - ${ex.message} \n ${e.code}');
       // errorCode = ex.message;
-
+      // print(e.code);
       AuthException.showException(e.code);
-    } catch (_) {
-      AuthException.showException(
-          'An Unknown error occorured. Please contact support.');
+    } catch (ee) {
+      SGSSnackbar.getSnackbarRed('Error during login',
+          'An Unknown error ocurred. Please contact support. \n$ee');
     }
   }
 
   Future<void> sendEmailVerification() async {
-    try {
-      await _firebaseAuth.currentUser?.sendEmailVerification();
-      setInitialScreen(firebaseUser.value);
-    } on FirebaseAuthException catch (e) {
-      // throw FIREBASE ERROR
-      AuthException.showException(e.code);
-      // print('FIREBASE AUTH EXCEPTION - ${ex.message}');
-      // throw ex;
-    } catch (_) {
-      // throw UNKNOWN ERROR
-      AuthException.showException(
-          'An Unknown error occorured. Please contact support.');
-      // print('EXCEPTION - ${ex.message}');
-    }
+    await _firebaseAuth.currentUser?.sendEmailVerification();
+    setInitialScreen(firebaseUser.value);
+    // try {
+    // } on FirebaseAuthException catch (e) {
+    //   // throw FIREBASE ERROR
+    //   AuthException.showException(e.code);
+    //   // print('FIREBASE AUTH EXCEPTION - ${ex.message}');
+    //   // throw ex;
+    // } catch (_) {
+    //   // throw UNKNOWN ERROR
+    //   AuthException.showException(
+    //       'An Unknown error occorured. Please contact support.');
+    //   // print('EXCEPTION - ${ex.message}');
+    // }
   }
 
   Future<void> logout() async {
