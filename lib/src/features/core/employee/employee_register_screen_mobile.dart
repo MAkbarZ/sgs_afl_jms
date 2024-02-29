@@ -6,8 +6,8 @@ import '../../../common_widgets/input_field.dart';
 import '../../../theme/widget_theme/text_theme.dart';
 
 class EmployeeRegisterScreenMobile extends StatefulWidget {
-  final Function(String)? onChangedEmplID;
-  final Widget isEmpIDValid;
+  // final Function(String)? onChangedEmplID;
+  // final Widget isEmpIDValid;
   final Function(Set<SGSEnumGender>)? onSelectionChangedGender;
   final Set<SGSEnumGender> selectedGender;
   final Function(String)? onChangedFullName;
@@ -20,26 +20,26 @@ class EmployeeRegisterScreenMobile extends StatefulWidget {
   // final Widget isEmailValid;
   final Function()? onPressedHireDate;
   final Widget isHireDateValid;
-  final Function(dynamic)? onChangedDivisions;
-  final Function(String?)? onSelectedDivisions;
-  final Widget isDivisionValid;
-  final Function(dynamic)? onChangedFunctions;
-  final Function(String?)? onSelectedFunctions;
-  final Widget isFunctionValid;
+  // final Function(dynamic)? onChangedDivisions;
+  // final Function(String?)? onSelectedDivisions;
+  // final Widget isDivisionValid;
+  // final Function(dynamic)? onChangedFunctions;
+  // final Function(String?)? onSelectedFunctions;
+  // final Widget isFunctionValid;
   final bool isInputDataOK;
   final Function()? onPressedSubmit;
-  final List<String> divisionList;
-  final List<String> functionList;
-  final String selectedDivison;
-  final String selectedFunction;
+  // final List<String> divisionList;
+  // final List<String> functionList;
+  // final String selectedDivison;
+  // final String selectedFunction;
   final String selectedHireDate;
 
   final String? initialValueEmail;
 
   const EmployeeRegisterScreenMobile({
     super.key,
-    this.onChangedEmplID,
-    required this.isEmpIDValid,
+    // this.onChangedEmplID,
+    // required this.isEmpIDValid,
     this.onSelectionChangedGender,
     this.onChangedFullName,
     required this.isFullNameValid,
@@ -51,21 +51,21 @@ class EmployeeRegisterScreenMobile extends StatefulWidget {
     // required this.isEmailValid,
     this.onPressedHireDate,
     required this.isHireDateValid,
-    this.onChangedDivisions,
-    required this.isDivisionValid,
-    this.onChangedFunctions,
-    required this.isFunctionValid,
+    // this.onChangedDivisions,
+    // required this.isDivisionValid,
+    // this.onChangedFunctions,
+    // required this.isFunctionValid,
     required this.isInputDataOK,
     this.onPressedSubmit,
-    required this.functionList,
-    required this.divisionList,
-    required this.selectedDivison,
-    required this.selectedFunction,
+    // required this.functionList,
+    // required this.divisionList,
+    // required this.selectedDivison,
+    // required this.selectedFunction,
     required this.selectedHireDate,
     required this.selectedGender,
     this.initialValueEmail,
-    this.onSelectedFunctions,
-    this.onSelectedDivisions,
+    // this.onSelectedFunctions,
+    // this.onSelectedDivisions,
   });
 
   @override
@@ -84,16 +84,16 @@ class _EmployeeRegisterScreenStateMobile
       width: 300.0,
       color: Colors.white,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        SGSInputField(
-          title: 'Employee ID',
-          hint: 'e.g. 02075',
-          maxLength: 10,
-          width: _defaultInputWidth,
-          isObscure: false,
-          readonly: false,
-          onChanged: widget.onChangedEmplID,
-        ),
-        widget.isEmpIDValid,
+        // SGSInputField(
+        //   title: 'Employee ID',
+        //   hint: 'e.g. 2075',
+        //   maxLength: 10,
+        //   width: _defaultInputWidth,
+        //   isObscure: false,
+        //   readonly: false,
+        //   // onChanged: widget.onChangedEmplID,
+        // ),
+        // widget.isEmpIDValid,
 
         const SizedBox(height: 5.0),
 
@@ -252,27 +252,27 @@ class _EmployeeRegisterScreenStateMobile
         // ),
         // widget.isDivisionValid,
 
-        SGSInputDropDownMenu(
-          title: 'AFL Division',
-          onChanged: widget.onChangedDivisions,
-          itemList: widget.divisionList,
-          itemSelected: widget.selectedDivison,
-          onSelected: widget.onSelectedDivisions,
-          dropdownWidth: _defaultInputWidth - 60,
-        ),
+        // SGSInputDropDownMenu(
+        //   title: 'AFL Division',
+        //   onChanged: widget.onChangedDivisions,
+        //   itemList: widget.divisionList,
+        //   itemSelected: widget.selectedDivison,
+        //   onSelected: widget.onSelectedDivisions,
+        //   dropdownWidth: _defaultInputWidth - 60,
+        // ),
         // widget.isFunctionValid,
 
         const SizedBox(height: 5.0),
 
         // AFL FUNCTION
-        SGSInputDropDownMenu(
-          title: 'AFL Function',
-          onChanged: widget.onChangedFunctions,
-          itemList: widget.functionList,
-          itemSelected: widget.selectedFunction,
-          onSelected: widget.onSelectedFunctions,
-          dropdownWidth: _defaultInputWidth - 60,
-        ),
+        // SGSInputDropDownMenu(
+        //   title: 'AFL Function',
+        //   onChanged: widget.onChangedFunctions,
+        //   itemList: widget.functionList,
+        //   itemSelected: widget.selectedFunction,
+        //   onSelected: widget.onSelectedFunctions,
+        //   dropdownWidth: _defaultInputWidth - 60,
+        // ),
         // widget.isFunctionValid,
 
         const SizedBox(height: 15.0),

@@ -6,8 +6,8 @@ import '../../../theme/theme.dart';
 import '../../../theme/widget_theme/text_theme.dart';
 
 class EmployeeRegisterScreenDesktop extends StatefulWidget {
-  final Function(String)? onChangedEmplID;
-  final Widget isEmpIDValid;
+  // final Function(String)? onChangedEmplID;
+  // final Widget isEmpIDValid;
   final Function(Set<SGSEnumGender>)? onSelectionChangedGender;
   final Set<SGSEnumGender> selectedGender;
   final Function(String)? onChangedFullName;
@@ -20,26 +20,26 @@ class EmployeeRegisterScreenDesktop extends StatefulWidget {
   // final Widget isEmailValid;
   final Function()? onPressedHireDate;
   final Widget isHireDateValid;
-  final Function(dynamic)? onChangedDivisions;
-  final Function(String?)? onSelectedDivisions;
-  final Widget isDivisionValid;
-  final Function(dynamic)? onChangedFunctions;
-  final Function(String?)? onSelectedFunctions;
-  final Widget isFunctionValid;
+  // final Function(dynamic)? onChangedDivisions;
+  // final Function(String?)? onSelectedDivisions;
+  // final Widget isDivisionValid;
+  // final Function(dynamic)? onChangedFunctions;
+  // final Function(String?)? onSelectedFunctions;
+  // final Widget isFunctionValid;
   final bool isInputDataOK;
   final Function()? onPressedSubmit;
-  final List<String> divisionList;
-  final List<String> functionList;
-  final String selectedDivison;
-  final String selectedFunction;
+  // final List<String> divisionList;
+  // final List<String> functionList;
+  // final String selectedDivison;
+  // final String selectedFunction;
   final String selectedHireDate;
 
   final String? initialValueEmail;
 
   const EmployeeRegisterScreenDesktop({
     super.key,
-    this.onChangedEmplID,
-    required this.isEmpIDValid,
+    // this.onChangedEmplID,
+    // required this.isEmpIDValid,
     this.onSelectionChangedGender,
     this.onChangedFullName,
     required this.isFullNameValid,
@@ -51,21 +51,21 @@ class EmployeeRegisterScreenDesktop extends StatefulWidget {
     // required this.isEmailValid,
     this.onPressedHireDate,
     required this.isHireDateValid,
-    this.onChangedDivisions,
-    required this.isDivisionValid,
-    this.onChangedFunctions,
-    required this.isFunctionValid,
+    // this.onChangedDivisions,
+    // required this.isDivisionValid,
+    // this.onChangedFunctions,
+    // required this.isFunctionValid,
     required this.isInputDataOK,
     this.onPressedSubmit,
-    required this.functionList,
-    required this.divisionList,
-    required this.selectedDivison,
-    required this.selectedFunction,
+    // required this.functionList,
+    // required this.divisionList,
+    // required this.selectedDivison,
+    // required this.selectedFunction,
     required this.selectedHireDate,
     required this.selectedGender,
     this.initialValueEmail,
-    this.onSelectedFunctions,
-    this.onSelectedDivisions,
+    // this.onSelectedFunctions,
+    // this.onSelectedDivisions,
   });
 
   @override
@@ -89,22 +89,23 @@ class _EmployeeRegisterScreenStateMobile
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         // FIRST ROW
         Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            SizedBox(
-              width: _defaultInputWidth,
-              child: SGSInputField(
-                title: 'Employee ID',
-                hint: 'e.g. 02075',
-                maxLength: 10,
-                width: _defaultInputWidth,
-                isObscure: false,
-                readonly: false,
-                onChanged: widget.onChangedEmplID,
-              ),
-            ),
-            widget.isEmpIDValid,
-          ]),
-          const SizedBox(width: 20.0),
+          // Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          //   SizedBox(
+          //     width: _defaultInputWidth,
+          //     child:
+          //     SGSInputField(
+          //       title: 'Employee ID',
+          //       hint: 'e.g. 02075',
+          //       maxLength: 10,
+          //       width: _defaultInputWidth,
+          //       isObscure: false,
+          //       readonly: false,
+          //       onChanged: widget.onChangedEmplID,
+          //     ),
+          //   ),
+          //   widget.isEmpIDValid,
+          // ]),
+          // const SizedBox(width: 20.0),
 
           // GENDER
           Container(
@@ -305,33 +306,33 @@ class _EmployeeRegisterScreenStateMobile
               //   ),
               // ),
               // widget.isDivisionValid,
-              child: SGSInputDropDownMenu(
-                title: 'AFL Division',
-                onChanged: widget.onChangedDivisions,
-                itemList: widget.divisionList,
-                itemSelected: widget.selectedDivison,
-                onSelected: widget.onSelectedDivisions,
-                dropdownWidth: _defaultInputWidth,
-              ),
+              // child: SGSInputDropDownMenu(
+              //   title: 'AFL Division',
+              //   onChanged: widget.onChangedDivisions,
+              //   itemList: widget.divisionList,
+              //   itemSelected: widget.selectedDivison,
+              //   onSelected: widget.onSelectedDivisions,
+              //   dropdownWidth: _defaultInputWidth,
+              // ),
             ),
           ]),
           const SizedBox(width: 20.0),
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             // Hired Date
-            SizedBox(
-              width: _defaultInputWidth,
-              child:
-                  // AFL FUNCTION
-                  SGSInputDropDownMenu(
-                title: 'AFL Function',
-                onChanged: widget.onChangedFunctions,
-                itemList: widget.functionList,
-                itemSelected: widget.selectedFunction,
-                onSelected: widget.onSelectedFunctions,
-                dropdownWidth: _defaultInputWidth,
-              ),
-              // widget.isFunctionValid,
-            ),
+            // SizedBox(
+            //   width: _defaultInputWidth,
+            //   child:
+            //       // AFL FUNCTION
+            //   //     SGSInputDropDownMenu(
+            //   //   title: 'AFL Function',
+            //   //   onChanged: widget.onChangedFunctions,
+            //   //   itemList: widget.functionList,
+            //   //   itemSelected: widget.selectedFunction,
+            //   //   onSelected: widget.onSelectedFunctions,
+            //   //   dropdownWidth: _defaultInputWidth,
+            //   // ),
+            //   // widget.isFunctionValid,
+            // ),
           ])
         ]),
 

@@ -55,12 +55,13 @@ class _SGSInputDropDownMenuState extends State<SGSInputDropDownMenu> {
           ),
 
           Positioned(
-            top: -9,
-            left: 16,
+            top: 5,
+            left: 0,
             child:
                 // SUFFIX ICON
                 SizedBox(
               // width: 210.0,
+              height: 20.0,
               width: widget.dropdownWidth,
 
               // color: const Color.fromARGB(255, 189, 254, 191),
@@ -79,7 +80,7 @@ class _SGSInputDropDownMenuState extends State<SGSInputDropDownMenu> {
               // ),
               child: DropdownButton(
                 value: widget.itemSelected,
-                padding: const EdgeInsets.only(right: 40.0),
+                padding: const EdgeInsets.only(left: 16.0, right: 20.0),
                 underline: Container(height: 0.0),
                 elevation: 6,
                 isExpanded: true,

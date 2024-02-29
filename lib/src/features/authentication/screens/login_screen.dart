@@ -1,11 +1,11 @@
-import 'package:afljms/src/features/core/employee/employee_register_screen.dart';
+import 'package:afljms/src/features/authentication/screens/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../common_widgets/input_field.dart';
 import '../../../theme/widget_theme/text_theme.dart';
-import '../controllers/login_controller.dart';
+import '../controllers/controller_login.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -134,9 +134,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: () {
                                 SystemChannels.textInput
                                     .invokeMethod('TextInput.hide');
-                                Get.to(() => const EmployeeRegisterScreen());
+                                Get.to(() => const SignUpScreen());
                               },
-                              child: const Text('Login'),
+                              child: const Text('SignUp'),
                             ),
                           ),
                           const SizedBox(height: 15.0),

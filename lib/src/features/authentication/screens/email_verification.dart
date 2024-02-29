@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../theme/widget_theme/text_theme.dart';
-import '../controllers/email_verify_controller.dart';
+import '../controllers/controller_email_verify.dart';
 
 class EmailVerification extends StatefulWidget {
   const EmailVerification({super.key});

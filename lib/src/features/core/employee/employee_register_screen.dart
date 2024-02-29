@@ -1,5 +1,5 @@
 import 'package:afljms/src/enums/enums.dart';
-import 'package:afljms/src/features/core/employee/employee_controller.dart';
+import 'package:afljms/src/features/core/employee/controllers/controller_employee.dart';
 import 'package:afljms/src/features/core/employee/employee_register_screen_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,13 +27,13 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
   void initState() {
     super.initState();
 
-    _controller.m_gender = 'male';
-    _controller.m_email = _controller.getCurrentUser()?.email ?? "blank";
+    _controller.gender = 'male';
+    _controller.email = _controller.getCurrentUser()?.email ?? "blank";
 
     getAllActiveDivisions();
     getAllActiveFunctions();
 
-    // _controller.m_selectedDivison = _divList[0].toString();
+    // _controller.selectedDivison = _divList[0].toString();
     // _controller.m_selectedFunction = _functionList[0].toString();
   }
 
@@ -51,63 +51,81 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
               Center(
                 child: screenWidth <= 600.0
                     ? EmployeeRegisterScreenMobile(
-                        isEmpIDValid: isEmpIDValid(),
-                        isFullNameValid: isFullNameValid(),
-                        isPhoneNoValid: isPhoneNoValid(),
-                        isMobileNoValid: isMobileNoValid(),
-                        // isEmailValid: isEmailValid(),
-                        isHireDateValid: isHireDateValid(),
-                        isDivisionValid: isDivisionValid(),
-                        isFunctionValid: isFunctionValid(),
+                        // isEmpIDValid: Validator().isEmpIDValid(
+                        //     _controller.isEmptyEmpID, _controller.empIDOK),
+                        isFullNameValid: Validator().isFullNameValid(
+                            _controller.isEmptyFullName,
+                            _controller.fullNameOK),
+                        isPhoneNoValid: Validator().isPhoneNoValid(
+                            _controller.isEmptyPhoneNo, _controller.phoneNoOK),
+                        isMobileNoValid: Validator().isMobileNoValid(
+                            _controller.isEmptyMobileNo,
+                            _controller.mobileNoOK),
+                        // isEmailValid: Validator().isEmailValid(),
+                        isHireDateValid: Validator()
+                            .isHireDateValid(_controller.isEmptyHireDate),
+                        // isDivisionValid: Validator()
+                        //     .isDivisionValid(_controller.isSelectedDivison),
+                        // isFunctionValid: Validator()
+                        //     .isFunctionValid(_controller.isSelectedFunction),
                         isInputDataOK: _controller.isInputDataOK(),
-                        divisionList: _divList,
-                        functionList: _functionList,
-                        selectedDivison: _controller.m_selectedDivison,
-                        selectedFunction: _controller.m_selectedFunction,
+                        // divisionList: _divList,
+                        // functionList: _functionList,
+                        // selectedDivison: _controller.selectedDivison,
+                        // selectedFunction: _controller.m_selectedFunction,
                         selectedGender: _controller.enumGender,
                         selectedHireDate: _controller.selectedDate,
-                        onChangedEmplID: onChangedEmplID,
+                        // onChangedEmplID: onChangedEmplID,
                         onSelectionChangedGender: onSelectionChangedGender,
                         onChangedFullName: onChangedFullName,
                         // onChangedEmail: onChangedEmail,
                         onChangedMobileNo: onChangedMobileNo,
                         onChangedPhoneNo: onChangedPhoneNo,
-                        onChangedFunctions: onChangedFunctions,
-                        onChangedDivisions: onChangedDivisions,
+                        // onChangedFunctions: onChangedFunctions,
+                        // onChangedDivisions: onChangedDivisions,
                         onPressedHireDate: onPressedHireDate,
                         onPressedSubmit: _controller.onSubmit,
-                        initialValueEmail: _controller.m_email,
+                        initialValueEmail: _controller.email,
                       )
                     :
 
                     //CONTAINER For >= 450.00
                     EmployeeRegisterScreenDesktop(
-                        isEmpIDValid: isEmpIDValid(),
-                        isFullNameValid: isFullNameValid(),
-                        isPhoneNoValid: isPhoneNoValid(),
-                        isMobileNoValid: isMobileNoValid(),
-                        // isEmailValid: isEmailValid(),
-                        isHireDateValid: isHireDateValid(),
-                        isDivisionValid: isDivisionValid(),
-                        isFunctionValid: isFunctionValid(),
+                        // isEmpIDValid: Validator().isEmpIDValid(
+                        //     _controller.isEmptyEmpID, _controller.empIDOK),
+                        isFullNameValid: Validator().isFullNameValid(
+                            _controller.isEmptyFullName,
+                            _controller.fullNameOK),
+                        isPhoneNoValid: Validator().isPhoneNoValid(
+                            _controller.isEmptyPhoneNo, _controller.phoneNoOK),
+                        isMobileNoValid: Validator().isMobileNoValid(
+                            _controller.isEmptyMobileNo,
+                            _controller.mobileNoOK),
+                        // isEmailValid: Validator().isEmailValid(),
+                        isHireDateValid: Validator()
+                            .isHireDateValid(_controller.isEmptyHireDate),
+                        // isDivisionValid: Validator()
+                        //     .isDivisionValid(_controller.isSelectedDivison),
+                        // isFunctionValid: Validator()
+                        //     .isFunctionValid(_controller.isSelectedFunction),
                         isInputDataOK: _controller.isInputDataOK(),
-                        divisionList: _divList,
-                        functionList: _functionList,
-                        selectedDivison: _controller.m_selectedDivison,
-                        selectedFunction: _controller.m_selectedFunction,
+                        // divisionList: _divList,
+                        // functionList: _functionList,
+                        // selectedDivison: _controller.selectedDivison,
+                        // selectedFunction: _controller.m_selectedFunction,
                         selectedGender: _controller.enumGender,
                         selectedHireDate: _controller.selectedDate,
-                        onChangedEmplID: onChangedEmplID,
+                        // onChangedEmplID: onChangedEmplID,
                         onSelectionChangedGender: onSelectionChangedGender,
                         onChangedFullName: onChangedFullName,
                         // onChangedEmail: onChangedEmail,
                         onChangedMobileNo: onChangedMobileNo,
                         onChangedPhoneNo: onChangedPhoneNo,
-                        onChangedFunctions: onChangedFunctions,
-                        onChangedDivisions: onChangedDivisions,
+                        // onChangedFunctions: onChangedFunctions,
+                        // onChangedDivisions: onChangedDivisions,
                         onPressedHireDate: onPressedHireDate,
                         onPressedSubmit: _controller.onSubmit,
-                        initialValueEmail: _controller.m_email,
+                        initialValueEmail: _controller.email,
                       ),
               ),
             ],
@@ -117,64 +135,12 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
     );
   }
 
-  Widget isEmpIDValid() {
-    if (_controller.isEmptyEmpID) {
-      return Text("Please enter your Employee ID.", style: warningTextStyle);
-    } else {
-      if (_controller.empIDOK == false) {
-        return Text('Enter 15 numerical digits, only. (e.g. 02075)',
-            style: warningTextStyle);
-      } else {
-        return Container();
-      }
-    }
-  }
-
-  Widget isFullNameValid() {
-    if (_controller.isEmptyFullName) {
-      return Text("Full Name cannot be empty.", style: warningTextStyle);
-    } else {
-      if (_controller.fullNameOK == false) {
-        return Text('Name must be in engish alphabates',
-            style: warningTextStyle);
-      } else {
-        return Container();
-      }
-    }
-  }
-
-  Widget isPhoneNoValid() {
-    if (_controller.isEmptyPhoneNo) {
-      return Text("Please enter your Phone No.", style: warningTextStyle);
-    } else {
-      if (_controller.phoneNoOK == false) {
-        return Text('Enter 15 numerical digits, only. (e.g. 020111999222314)',
-            style: warningTextStyle);
-      } else {
-        return Container();
-      }
-    }
-  }
-
-  Widget isMobileNoValid() {
-    if (_controller.isEmptyMobileNo) {
-      return Text("Please enter your Mobile No.", style: warningTextStyle);
-    } else {
-      if (_controller.mobileNoOK == false) {
-        return Text('Enter 11 numerical digits, only. (e.g. 03138476361)',
-            style: warningTextStyle);
-      } else {
-        return Container();
-      }
-    }
-  }
-
-  // Widget isEmailValid() {
-  //   if (_IsEmptyEmail) {
-  //     return Text("Please enter your Email address.", style: warningTextStyle);
+  // Widget isEmpIDValid() {
+  //   if (_controller.isEmptyEmpID) {
+  //     return Text("Please enter your Employee ID.", style: warningTextStyle);
   //   } else {
-  //     if (_EmailOK == false) {
-  //       return Text('Please enter correctly formatted Email',
+  //     if (_controller.empIDOK == false) {
+  //       return Text('Enter 15 numerical digits, only. (e.g. 02075)',
   //           style: warningTextStyle);
   //     } else {
   //       return Container();
@@ -182,29 +148,81 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
   //   }
   // }
 
-  Widget isHireDateValid() {
-    if (_controller.isEmptyHireDate) {
-      return Text("Please enter your Hired Date", style: warningTextStyle);
-    } else {
-      return Container();
-    }
-  }
+  // Widget isFullNameValid() {
+  //   if (_controller.isEmptyFullName) {
+  //     return Text("Full Name cannot be empty.", style: warningTextStyle);
+  //   } else {
+  //     if (_controller.fullNameOK == false) {
+  //       return Text('Name must be in engish alphabates',
+  //           style: warningTextStyle);
+  //     } else {
+  //       return Container();
+  //     }
+  //   }
+  // }
 
-  Widget isDivisionValid() {
-    if (_controller.isSelectedDivison == false) {
-      return Text("Please enter AFL division.", style: warningTextStyle);
-    } else {
-      return Container();
-    }
-  }
+  // Widget isPhoneNoValid() {
+  //   if (_controller.isEmptyPhoneNo) {
+  //     return Text("Please enter your Phone No.", style: warningTextStyle);
+  //   } else {
+  //     if (_controller.phoneNoOK == false) {
+  //       return Text('Enter 15 numerical digits, only. (e.g. 020111999222314)',
+  //           style: warningTextStyle);
+  //     } else {
+  //       return Container();
+  //     }
+  //   }
+  // }
 
-  Widget isFunctionValid() {
-    if (_controller.isSelectedFunction == false) {
-      return Text("Please enter AFL function.", style: warningTextStyle);
-    } else {
-      return Container();
-    }
-  }
+  // Widget isMobileNoValid() {
+  //   if (_controller.isEmptyMobileNo) {
+  //     return Text("Please enter your Mobile No.", style: warningTextStyle);
+  //   } else {
+  //     if (_controller.mobileNoOK == false) {
+  //       return Text('Enter 11 numerical digits, only. (e.g. 03138476361)',
+  //           style: warningTextStyle);
+  //     } else {
+  //       return Container();
+  //     }
+  //   }
+  // }
+
+  // // Widget isEmailValid() {
+  // //   if (_IsEmptyEmail) {
+  // //     return Text("Please enter your Email address.", style: warningTextStyle);
+  // //   } else {
+  // //     if (_EmailOK == false) {
+  // //       return Text('Please enter correctly formatted Email',
+  // //           style: warningTextStyle);
+  // //     } else {
+  // //       return Container();
+  // //     }
+  // //   }
+  // // }
+
+  // Widget isHireDateValid() {
+  //   if (_controller.isEmptyHireDate) {
+  //     return Text("Please enter your Hired Date", style: warningTextStyle);
+  //   } else {
+  //     return Container();
+  //   }
+  // }
+
+  // Widget isDivisionValid() {
+  //   if (_controller.isSelectedDivison == false) {
+  //     return Text("Please enter AFL division.", style: warningTextStyle);
+  //   } else {
+  //     return Container();
+  //   }
+  // }
+
+  // Widget isFunctionValid() {
+  //   if (_controller.isSelectedFunction == false) {
+  //     return Text("Please enter AFL function.", style: warningTextStyle);
+  //   } else {
+  //     return Container();
+  //   }
+  // }
 
   // METHODS
 
@@ -218,7 +236,7 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
         _divList.add(docSnapshot.data()['divisionName']);
       }
       setState(() {
-        _controller.m_selectedDivison = _divList.first;
+        // _controller.selectedDivison = _divList.first;
         _controller.isSelectedDivison = true;
         // print(_divList.first);
       });
@@ -235,7 +253,7 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
         _functionList.add(docSnapshot.data()['functionName']);
       }
       setState(() {
-        _controller.m_selectedFunction = _functionList.first;
+        // _controller.m_selectedFunction = _functionList.first;
         _controller.isSelectedFunction = true;
       });
       // print(_divList);
@@ -251,9 +269,9 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
 
           if (_controller.isEmptyEmpID == false &&
               _controller.empIDOK == true) {
-            _controller.m_empId = textValue;
+            _controller.empId = textValue;
           } else {
-            _controller.m_empId = "";
+            _controller.empId = "";
           }
         });
       } else {
@@ -268,9 +286,9 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
     // print('Selected 0 ${selected.elementAt(0)}');
     setState(() {
       if (selected.elementAt(0) == SGSEnumGender.male) {
-        _controller.m_gender = 'male';
+        _controller.gender = 'male';
       } else {
-        _controller.m_gender = 'female';
+        _controller.gender = 'female';
       }
       _controller.enumGender = selected;
     });
@@ -285,9 +303,9 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
 
           if (_controller.isEmptyFullName == false &&
               _controller.fullNameOK == true) {
-            _controller.m_fullName = textValue;
+            _controller.fullName = textValue;
           } else {
-            _controller.m_fullName = '';
+            _controller.fullName = '';
           }
         });
       } else {
@@ -306,9 +324,9 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
 
           if (_controller.isEmptyPhoneNo == false &&
               _controller.phoneNoOK == true) {
-            _controller.m_phone = textValue;
+            _controller.phone = textValue;
           } else {
-            _controller.m_phone = '';
+            _controller.phone = '';
           }
         });
       } else {
@@ -326,9 +344,9 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
           _controller.mobileNoOK = Validator().isMobileNumber(textValue);
           if (_controller.isEmptyMobileNo == false &&
               _controller.mobileNoOK == true) {
-            _controller.m_mobile = textValue;
+            _controller.mobile = textValue;
           } else {
-            _controller.m_mobile = '';
+            _controller.mobile = '';
           }
         });
       } else {
@@ -346,9 +364,9 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
   //         _EmailOK = Validator().isEmail(textValue);
 
   //         if (_IsEmptyEmail == false && _EmailOK == true) {
-  //           m_email = textValue;
+  //           email = textValue;
   //         } else {
-  //           m_email = '';
+  //           email = '';
   //         }
   //       });
   //     } else {
@@ -369,7 +387,7 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
       if (_pickerDate != null) {
         _controller.selectedDate = DateFormat.yMMMd().format(_pickerDate);
 
-        _controller.m_hiredDate = _pickerDate.year.toString() +
+        _controller.hiredDate = _pickerDate.year.toString() +
             NumberFormat('00', 'en_US').format(_pickerDate.month) +
             NumberFormat('00', 'en_US').format(_pickerDate.day);
 
@@ -383,12 +401,12 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
   void onChangedDivisions(dynamic value) {
     if (value != null || value.toString() != "") {
       setState(() {
-        _controller.m_selectedDivison = value.toString();
+        // _controller.selectedDivison = value.toString();
         _controller.isSelectedDivison = true;
       });
     } else {
       setState(() {
-        _controller.m_selectedDivison = "Enter your AFL Division";
+        // _controller.selectedDivison = "Enter your AFL Division";
         _controller.isSelectedDivison = false;
       });
     }
@@ -397,12 +415,12 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
   void onChangedFunctions(dynamic value) {
     if (value != null || value.toString() != "") {
       setState(() {
-        _controller.m_selectedFunction = value.toString();
+        // _controller.m_selectedFunction = value.toString();
         _controller.isSelectedFunction = true;
       });
     } else {
       setState(() {
-        _controller.m_selectedFunction = "Enter your AFL Function";
+        // _controller.m_selectedFunction = "Enter your AFL Function";
         _controller.isSelectedFunction = false;
       });
     }
@@ -411,21 +429,18 @@ class _EmployeeRegisterScreenState extends State<EmployeeRegisterScreen> {
   void onSelectedFunctions(String? value) {
     if (value != null || value != "") {
       setState(() {
-        _controller.m_selectedFunction = value.toString();
+        // _controller.m_selectedFunction = value.toString();
         _controller.isSelectedFunction = true;
       });
     } else {
       setState(() {
-        _controller.m_selectedFunction = "Enter your AFL Function";
+        // _controller.m_selectedFunction = "Enter your AFL Function";
         _controller.isSelectedFunction = false;
       });
     }
   }
 
   // VARIABLES
-
-  TextStyle warningTextStyle =
-      const TextStyle(color: Colors.red, fontSize: 9.0);
 
   var logoAndHeader = Container(
     padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),

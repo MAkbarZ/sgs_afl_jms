@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../../../common_widgets/input_field.dart';
 import '../../../theme/widget_theme/text_theme.dart';
 import '../../../utils/text_input_validator.dart';
-import '../controllers/signup_controller.dart';
+import '../controllers/controller_signup.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -19,14 +19,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   bool _hidePassword = true;
 
-  String m_email = '';
-  String m_password = '';
+  String _empId = '';
+  String _email = '';
+  String _password = '';
 
-  bool _IsEmptyEmail = true;
-  bool _EmailOK = false;
+  bool _isEmptyEmpId = true;
+  bool _empIdOK = false;
 
-  bool _IsEmptyPassword = true;
-  bool _PasswordOK = false;
+  bool _isEmptyEmail = true;
+  bool _emailOK = false;
+
+  bool _isEmptyPassword = true;
+  bool _passwordOK = false;
 
   final double _defaultInputWidth = 300.0;
 
@@ -54,6 +58,45 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Employee ID
+                      const SizedBox(height: 5.0),
+                      SGSInputField(
+                          title: 'Employee ID',
+                          hint: 'e.g. 2075',
+                          readonly: false,
+                          isObscure: false,
+                          maxLength: 10,
+                          width: _defaultInputWidth,
+                          onChanged: (textValue) {
+                            setState(() {
+                              if (textValue.trim() != "") {
+                                setState(() {
+                                  _isEmptyEmpId = false;
+                                  _empIdOK =
+                                      Validator().isEmployeeID(textValue);
+
+                                  if (_isEmptyEmpId == false &&
+                                      _empIdOK == true) {
+                                    _empId = textValue;
+                                  } else {
+                                    _empId = '';
+                                  }
+                                });
+                              } else {
+                                setState(() => _isEmptyEmpId = true);
+                                return;
+                              }
+                            });
+                          }),
+                      _isEmptyEmpId
+                          ? Text("Please enter your Employee ID.",
+                              style: warningTextStyle)
+                          : _empIdOK == false
+                              ? Text(
+                                  'Enter 15 numerical digits, only. (e.g. 02075)',
+                                  style: warningTextStyle)
+                              : Container(),
+
                       // Email
                       const SizedBox(height: 5.0),
                       SGSInputField(
@@ -81,26 +124,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             setState(() {
                               if (textValue.trim() != "") {
                                 setState(() {
-                                  _IsEmptyEmail = false;
-                                  _EmailOK = Validator().isEmail(textValue);
+                                  _isEmptyEmail = false;
+                                  _emailOK = Validator().isEmail(textValue);
 
-                                  if (_IsEmptyEmail == false &&
-                                      _EmailOK == true) {
-                                    m_email = textValue;
+                                  if (_isEmptyEmail == false &&
+                                      _emailOK == true) {
+                                    _email = textValue;
                                   } else {
-                                    m_email = '';
+                                    _email = '';
                                   }
                                 });
                               } else {
-                                setState(() => _IsEmptyEmail = true);
+                                setState(() => _isEmptyEmail = true);
                                 return;
                               }
                             });
                           }),
-                      _IsEmptyEmail
+                      _isEmptyEmail
                           ? Text("Please enter your Email address.",
                               style: warningTextStyle)
-                          : _EmailOK == false
+                          : _emailOK == false
                               ? Text('Please enter correctly formatted Email',
                                   style: warningTextStyle)
                               : Container(),
@@ -146,26 +189,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             setState(() {
                               if (textValue.trim() != "") {
                                 setState(() {
-                                  _IsEmptyPassword = false;
-                                  _PasswordOK =
+                                  _isEmptyPassword = false;
+                                  _passwordOK =
                                       Validator().isPassword(textValue);
-                                  if (_IsEmptyPassword == false &&
-                                      _PasswordOK == true) {
-                                    m_password = textValue;
+                                  if (_isEmptyPassword == false &&
+                                      _passwordOK == true) {
+                                    _password = textValue;
                                   } else {
-                                    m_password = '';
+                                    _password = '';
                                   }
                                 });
                               } else {
-                                setState(() => _IsEmptyPassword = true);
+                                setState(() => _isEmptyPassword = true);
                                 return;
                               }
                             });
                           }),
-                      _IsEmptyPassword
+                      _isEmptyPassword
                           ? Text("Please enter your Password.",
                               style: warningTextStyle)
-                          : _PasswordOK == false
+                          : _passwordOK == false
                               ? Text('Password must be at least 6 characters.',
                                   style: warningTextStyle)
                               : Container(),
@@ -180,8 +223,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 .invokeMethod('TextInput.hide');
 
                             if (isInputDataOK()) {
-                              _controller.signUp('${m_email.trim()}@sgs.com',
-                                  m_password.trim());
+                              _controller.signUp('${_email.trim()}@sgs.com',
+                                  _password.trim(), _empId);
                             }
                           },
                           child: const Text('Submit'),
@@ -201,10 +244,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   // METHODS
 
   bool isInputDataOK() {
-    if (_IsEmptyEmail == false &&
-        _EmailOK == true &&
-        _IsEmptyPassword == false &&
-        _PasswordOK == true) {
+    if (_isEmptyEmail == false &&
+        _emailOK == true &&
+        _isEmptyPassword == false &&
+        _passwordOK == true) {
       return true;
     } else {
       return false;

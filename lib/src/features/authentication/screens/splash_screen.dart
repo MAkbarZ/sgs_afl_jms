@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../theme/widget_theme/text_theme.dart';
-import '../controllers/splash_screen_controller.dart';
+import '../controllers/controller_splash_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   final splashScreenController = Get.put(SplashScreenController());

@@ -17,7 +17,7 @@ class AFLDivisionAdd extends StatefulWidget {
 }
 
 class _AFLDivisionAddState extends State<AFLDivisionAdd> {
-  bool _IsEmptyDivName = true;
+  bool _isEmptyDivName = true;
 
   final AFLDivisionController _controller = Get.put(AFLDivisionController());
 
@@ -71,14 +71,14 @@ class _AFLDivisionAddState extends State<AFLDivisionAdd> {
                   onChanged: (textValue) {
                     setState(() {
                       if (textValue.trim() != "") {
-                        setState(() => _IsEmptyDivName = false);
+                        setState(() => _isEmptyDivName = false);
                       } else {
-                        setState(() => _IsEmptyDivName = true);
+                        setState(() => _isEmptyDivName = true);
                         return;
                       }
                     });
                   }),
-              _IsEmptyDivName
+              _isEmptyDivName
                   ? const Text("Division Name cannot be empty.",
                       style: TextStyle(color: Colors.red, fontSize: 9.0))
                   : Container(),
@@ -159,13 +159,13 @@ class _AFLDivisionAddState extends State<AFLDivisionAdd> {
                     // print(divisionController.text.trim());
                     // print(_divisionActive);
                     if (_controller.divisionController.text.trim() != "") {
-                      // setState(() => _IsEmptyDivName = false);
+                      // setState(() => _isEmptyDivName = false);
 
                       _controller.create();
 
                       Get.back();
                     } else {
-                      setState(() => _IsEmptyDivName = true);
+                      setState(() => _isEmptyDivName = true);
                       return;
                     }
                   },

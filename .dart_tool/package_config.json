@@ -206,6 +206,12 @@
       "languageVersion": "2.16"
     },
     {
+      "name": "grouped_list",
+      "rootUri": "file:///C:/Users/M%20Akbar/AppData/Local/Pub/Cache/hosted/pub.dev/grouped_list-5.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "http_parser",
       "rootUri": "file:///C:/Users/M%20Akbar/AppData/Local/Pub/Cache/hosted/pub.dev/http_parser-4.0.2",
       "packageUri": "lib/",
@@ -380,7 +386,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2024-02-10T10:53:35.440826Z",
+  "generated": "2024-02-25T15:01:50.632315Z",
   "generator": "pub",
   "generatorVersion": "3.2.3"
 }

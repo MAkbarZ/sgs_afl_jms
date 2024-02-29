@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import '../../../common_widgets/input_field.dart';
 import '../../../utils/text_input_validator.dart';
 
-import '../controllers/user_admin_controller.dart';
+import '../controllers/controller_user_admin.dart';
 
 class UserAdminAddScreen extends StatefulWidget {
   const UserAdminAddScreen({

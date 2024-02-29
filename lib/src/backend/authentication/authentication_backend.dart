@@ -1,12 +1,18 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
+import 'dart:async';
+
+import 'package:afljms/src/features/authentication/controllers/controller_employee_auth.dart';
+import 'package:afljms/src/features/authentication/models/model_emp_auth.dart';
+import 'package:afljms/src/features/authentication/models/model_user.dart';
+import 'package:afljms/src/features/authentication/screens/user_pending_screen.dart';
 import 'package:afljms/src/features/core/employee/employee_register_screen.dart';
-import 'package:afljms/src/features/authentication/screens/user_admin_screen.dart';
-import 'package:afljms/src/features/core/incharge/afl_division/afl_division_add_drawer.dart';
-import 'package:afljms/src/features/core/incharge/afl_division/afl_division_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../../features/authentication/controllers/controller_user.dart';
 import '../../features/authentication/screens/email_verification.dart';
 import '../../features/authentication/screens/login_screen.dart';
 import '../../features/authentication/screens/master_screen.dart';
@@ -23,13 +29,17 @@ class AuthenticationBackEnd extends GetxController {
   final _firebaseAuth = FirebaseAuth.instance;
   late final Rx<User?> firebaseUser;
   User? currentUser;
+
+  bool userIsActive = false;
+  var empActive = false.obs;
+  var empAuthorityActive = false.obs;
+
   final box = GetStorage();
 
-  // var phoneVerificationId = ''.obs;
-  String errorCode = '';
+  final _userController = Get.put(UserController());
+  final _empAuthController = Get.put(EmployeeAuthorityController());
 
-  final _userDBCollection = FirebaseFirestore.instance.collection('users');
-  Map<String, dynamic> _userData = {};
+  List<EmployeeAuthorityModel> authorities = [];
 
   @override
   void onReady() {
@@ -50,21 +60,21 @@ class AuthenticationBackEnd extends GetxController {
   // }
 
   setInitialScreen(User? user) async {
-    print('Logged in user is \n$user');
+    // print('Logged in user is \n$user');
 
     if (user?.uid == 'oNnZgAboUhc4t7xD3bzfjGP7zr32') {
       // user is MASTER
-      print('user is Master');
+      // print('user is Master');
       Get.offAll(() => const MasterScreen());
       return;
     } else if (user?.uid == 't9hEMybV5EMfCIYLuMj59uQxYlR2') {
-      print('user is SuperAdmin');
+      // print('user is SuperAdmin');
       // user is SuperAdmin
       // Get.offAll(() => const SuperAdminScreen());
       Get.offAll(() => const InchargeDashboard());
       return;
     } else if (user?.uid == 'q4S1UNEMQ1PNGLgnlLmUHDo5dpD3') {
-      print('user is Admin');
+      // print('user is Admin');
       // user is Admin
       Get.offAll(() => const InchargeDashboard());
       return;
@@ -72,21 +82,28 @@ class AuthenticationBackEnd extends GetxController {
       //
     } else if (user != null) {
       currentUser = user;
-      print('user is not null');
-      // getUserDoc(user.uid);
-      if (user.emailVerified == true) {
-        print('user is VERIFIED');
-        // go to related dashboard
-        Get.offAll(() => const EmployeeRegisterScreen());
-      } else if (user.emailVerified == false) {
-        print('user is NOT VERIFIED');
 
+      if (user.emailVerified == false) {
         Get.offAll(() => const EmailVerification());
+      } else {
+        userIsActive = await _userController.checkUserStatus(user.uid);
+
+        if (userIsActive == false) {
+          Get.offAll(() => const UserPending());
+        } else if (userIsActive == true) {
+          Get.offAll(() => const EmployeeRegisterScreen());
+        }
+
+        //
       }
+
+      //
     } else if (user == null) {
       print('user is NULL');
       Get.offAll(() => SplashScreen());
-      // Get.offAll(() => const LoginScreen());
+      // Get.offAll(() => const EmployeeAuthScreen());
+      // Get.offAll(() => const EmployeeAuthorityAdd());
+      // Get.offAll(() => const EmployeeRegisterScreen());
 
       // USER IS NONE OF ABOVE
     } else {
@@ -95,45 +112,13 @@ class AuthenticationBackEnd extends GetxController {
     }
   }
 
-  Future<void> createAUserDoc(Map<String, dynamic> data) async {
-    await _userDBCollection
-        .doc(data['uid'])
-        .set(
-          data,
-        )
-        .catchError((err) {
-      SGSSnackbar.getSnackbarRed('Error', 'Following error occorued: \n $err');
-    });
+  refreshScreen() {
+    setInitialScreen(firebaseUser.value);
   }
-
-  Future<void> updateUser(Map<String, dynamic> data) {
-    return _userDBCollection.doc(currentUser?.uid).update(data);
-  }
-
-  // getUserDoc(String userUid) {
-  //   _userDBCollection.where('uid', isEqualTo: userUid).get().then(
-  //     (querySnapshot) {
-  //       for (var docSnapshot in querySnapshot.docs) {
-  //         print('UPDATED ${docSnapshot.id} => ${docSnapshot.data()}');
-  //       }
-  //       return querySnapshot;
-  //     },
-  //     onError: (e) => print("Error getting User Doc: $e"),
-  //     // value.docs.forEach((element) {
-  //     //   print("element is $element");
-  //     //   print("element id is ${element.id}");
-  //     // });
-  //     // throw 'hi hui';
-  //     // }
-  //   );
-  //   //   .catchError((err) {
-  //   // SGSSnackbar.getSnackbarRed('Error', 'Following error occorued: \n $err');
-  //   // });
-  // }
 
 // CREATE USER - WITH EMAIL AND PASSWORD
   Future<void> createUserWithEmailAndPassword(
-      String email, String password) async {
+      String email, String password, String empId) async {
     try {
       // try CREATING NEW AUTHENTICATION
       await _firebaseAuth.createUserWithEmailAndPassword(
@@ -148,17 +133,7 @@ class AuthenticationBackEnd extends GetxController {
       if (firebaseUser.value != null) {
         // print(firebaseUser.value?.uid);
 
-        _userData = {
-          "email": firebaseUser.value?.email,
-          "empId": '',
-          "isVerified": firebaseUser.value?.emailVerified,
-          "active": false,
-          "uid": firebaseUser.value?.uid,
-          "approverEmpId": '',
-          "approverEmail": '',
-        };
-        // print(_userData);
-        createAUserDoc(_userData);
+        await createAUserDoc(empId);
 
         setInitialScreen(firebaseUser.value);
         // return "Success";
@@ -219,6 +194,16 @@ class AuthenticationBackEnd extends GetxController {
     // Get.offAll(() => const WelcomeScreen());
     _firebaseAuth.signOut();
     setInitialScreen(firebaseUser.value);
+  }
+
+  Future<void> createAUserDoc(String empId) async {
+    UserModel _data = _userController.userObj;
+    _data.uid = firebaseUser.value!.uid;
+    _data.empId = empId;
+    _data.email = firebaseUser.value!.email.toString();
+    _data.active = false;
+
+    await _userController.create(_data);
   }
 
   // we will not use PHONE authentication, because it is costly

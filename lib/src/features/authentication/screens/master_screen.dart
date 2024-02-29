@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import '../../../common_widgets/search_textbox.dart';
 import '../../../utils/get_snackbar.dart';
 
-import '../controllers/user_admin_controller.dart';
-import '../controllers/signup_controller.dart';
+import '../controllers/controller_user_admin.dart';
+import '../controllers/controller_signup.dart';
 
 import 'login_screen.dart';
 import 'user_admin_add_drawer.dart';
